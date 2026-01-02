@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css?family=Codystar:300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700&family=Iceland&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+.iceland{
+    font-family: 'Iceland', cursive;
+}
+.big-shoulder{
+    font-family: 'Big Shoulders Display', sans-serif;
+}
+.oswald{
+    font-family: 'Oswald', sans-serif;
+}
+
+.my-name-nav{
+    font-family:"Brush Script MT",cursive;
+    text-shadow:
+        2px 2px 1px white,  
+        -2px -2px 1px white, 
+        2px -2px 1px white,  
+        -2px 2px 1px white; 
+}
+
+.nav-link {
+    position: relative;
+    padding-bottom: 5px;  
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.2px;
+    background: #e8e8e8;
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: transform 0.3s ease-out;
+    box-shadow: 0 0 3px rgb(255, 255, 255);
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+    background: linear-gradient(to right, white 70%, rgb(0, 94, 255));
+}
+
+.nav-link.underline-active::after {
+  transform: scaleX(1);
+  background: linear-gradient(to right, rgb(249,46,0), rgb(109, 143, 255));
+  box-shadow: 0 0 0px rgb(255, 255, 255) !important;
+}
+
+.wlcm-head{
+    font-family:'Codystar';
+    -webkit-animation: glow 2s ease-in-out infinite alternate;
+    -moz-animation: glow 2s ease-in-out infinite alternate;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+   from {
+        color: #fff;
+        text-shadow: 0 0 10px #00fff2, 0 0 20px #00fff2, 0 0 30px #00fff2, 0 0 40px #00fff2, 0 0 50px #00fff2, 0 0 60px #00fff2, 0 0 70px #00fff2, 0 0 90px #00fff2;
+    }
+
+    to {
+        color: gray;
+        text-shadow: 0 0 20px #00fff2, 0 0 30px #00fff2, 0 0 40px #00fff2, 0 0 50px #00fff2, 0 0 60px #00fff2, 0 0 70px #00fff2, 0 0 80px #00fff2, 0 1 90px #00fff2;
+    }
+}
+
+.my-name-home{
+    background: linear-gradient(90deg, rgb(255, 0, 0), orangered, orange, rgb(17, 80, 255));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.steve-quote{
+    font-family: 'Courier New', Courier, monospace;;
+}
+
+/* home boder set************************************************************************/
+.border-scan{
+    position: relative;
+}
+/* Top-left corner */
+.border-scan::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: -5.5px;
+    width: 10px;
+    height: 119%;
+    border-top: 3px solid white;
+    border-bottom: 3px solid white;
+    border-left: 3px solid white;
+    z-index: 1;
+}
+
+/* Top-right corner */
+.border-scan::after {
+    content: "";
+    position: absolute;
+    top: -6px;
+    right: -5.5px;
+    width: 10px;
+    height: 119%;
+    border-top: 3px solid white;
+    border-bottom: 3px solid white;
+    border-right: 3px solid white;
+}
+
+/* for home mobile */
+@media (max-width: 500px) {
+  .home .border-scan::before {
+      height: 124%;
+  }
+
+  .home .border-scan::after {
+      height: 124%;
+  }
+}
+
+/* moving line animation */
+.border-scan a,
+.border-scan button {
+  position: relative;
+}
+
+.border-scan a::before,
+.border-scan button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 4px;
+  width: 2px;
+  height: 100%;
+  background-color: #00ba9b;
+  box-shadow: 0px 10px 10px #00fff2, 0px -10px 10px #00fff2;
+  transform: translateX(-100%);
+  transition: transform 2s ease-in-out;
+  opacity: 0;
+}
+
+.border-scan a:hover::before,
+.border-scan a:focus::before,
+.border-scan button:hover::before,
+.border-scan button:focus::before {
+  animation: slide-line 0.6s ease-in-out forwards;
+  opacity: 1;
+}
+
+@keyframes slide-line {
+  from {
+    left: 3;
+  }
+  to {
+    left: 101%;
+  }
+}
+/* home border set end *********************************************************/
+
+.about .border-scan::before {
+    height: 123%;
+}
+
+.about .border-scan::after {
+    height: 123%;
+}
+
+.skill .border-scan::before {
+    height: 103%;
+    top: -1px;
+    left: -2.5px;
+}
+
+.skill .border-scan::after {
+    height: 103%;
+    top: -1px;
+    right: -2.5px;
+}
+.download-resume .border-scan::before {
+  height: 119%;
+}
+.download-resume .border-scan::after {
+  height: 119%;
+}
+
+/* scroll card */
+.education-cards > * {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.education-cards .border-scan::before {
+    height: 100.5%;
+    top: -1px;
+    left: 0;
+}
+.education-cards .border-scan::after {
+    height: 100.5%;
+    top: -1px;
+    right: 0;
+}
+
+.contact .border-scan::before {
+    height: 121%;
+    top: -5.5px;
+}
+.contact .border-scan::after {
+  height: 121%;
+  top: -5.5px;
+  right: -6px;
+}
+.projects .border-scan::before {
+    height: 133%;
+    top: -5.5px;
+}
+.projects .border-scan::after {
+  height: 133%;
+  top: -5.5px;
+}
+
+
+.corner-border {
+  --b: 3px;   /* thickness of L-corner border */
+  --c: white;   /* color of border */
+  --w: 20px;  /* size of L-corners */
+  --t: 0.4px;   /* thickness of connecting lines */
+
+  border: var(--b) solid #0000;
+  /* background-color: transparent; */
+  padding: 0.5rem;
+
+  --_g: #0000 90deg, var(--c) 0;
+  --_p: var(--w) var(--w);
+
+  background-image:
+    /* corner conic gradients (existing) */
+    conic-gradient(from 90deg  at top    var(--b) left  var(--b), var(--_g)),
+    conic-gradient(from 180deg at top    var(--b) right var(--b), var(--_g)),
+    conic-gradient(from 0deg   at bottom var(--b) left  var(--b), var(--_g)),
+    conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g)),
+
+    /* NEW: connecting lines */
+    linear-gradient(to right, var(--c) 0 100%) ,  /* top */
+    linear-gradient(to bottom, var(--c) 0 100%), /* right */
+    linear-gradient(to right, var(--c) 0 100%) ,  /* bottom */
+    linear-gradient(to bottom, var(--c) 0 100%);  /* left */
+
+  background-position:
+    0 0,          /* top-left corner */
+    100% 0,       /* top-right corner */
+    0 100%,       /* bottom-left corner */
+    100% 100%,    /* bottom-right corner */
+
+    /* connecting lines */
+    var(--w) 0.3%,              /* top */
+    99.7% var(--w),           /* right */
+    var(--w) 99.7%,           /* bottom */
+    0.3% var(--w);              /* left */
+
+  background-size:
+    var(--_p), var(--_p), var(--_p), var(--_p),  /* corners */
+    calc(100% - 2 * var(--w)) var(--t),          /* top line */
+    var(--t) calc(100% - 2 * var(--w)),          /* right line */
+    calc(100% - 2 * var(--w)) var(--t),          /* bottom line */
+    var(--t) calc(100% - 2 * var(--w));          /* left line */
+
+  background-repeat: no-repeat;
+  background-origin: border-box;
+}
