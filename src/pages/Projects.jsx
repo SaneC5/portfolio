@@ -76,7 +76,7 @@ const MY_PROJECTS = [
     title: 'Personal Portfolio',
     type: 'Portfolio Website',
     builtWith: 'React (Vite), Tailwind CSS, GSAP, Express.js, Node.js',
-    liveUrl: 'https://example.com/portfolio',
+    liveUrl: 'https://portfolio-4h0m.onrender.com/contact',
     description: 'Personal Portfolio is a modern, animated showcase featuring projects, certificates, and contact sections. Built with React and Vite for optimal performance, styled with Tailwind CSS, enhanced with GSAP animations, and integrated with Node.js backend for contact form submissions.',
     media: [
       { type: 'image', src: PortfolioImg1 },
