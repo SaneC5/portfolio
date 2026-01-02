@@ -79,12 +79,14 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve React build
-app.use(express.static(path.join(__dirname, '../dist')));
+const distPath = path.resolve(__dirname, '../dist');
+
+app.use(express.static(distPath));
 
 app.use((req, res, next) => {
   // Only handle non-API GET requests
   if (req.method === 'GET' && !req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+    res.sendFile(path.join(distPath, 'index.html'));
   } else {
     next();
   }
