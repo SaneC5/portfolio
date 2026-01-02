@@ -44,8 +44,10 @@ const Contact = () => {
     setLoading(true);
     setStatus(null);
 
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     try {
-      const response = await fetch('/api/contact', { 
+      const response = await fetch(`${apiUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
