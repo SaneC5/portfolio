@@ -60,16 +60,11 @@ app.post('/api/contact', async (req, res) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    res.status(200).json({ 
-      success: true, 
-      message: 'Email sent successfully' 
-    });
+    res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Error sending email:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to send email. Please try again later.' 
-    });
+    console.error('Error sending email:', error); // full error
+    if (error.response) console.error('SMTP Response:', error.response);
+    res.status(500).json({ success: false, message: 'Failed to send email', error: error.message });
   }
 });
 
