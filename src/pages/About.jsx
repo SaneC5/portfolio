@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Observer } from 'gsap/Observer';
 
-import profilePic from '../assets/img/sc.jpg';
+import profilePic from '../assets/img/SC.JPG';
 import skillbg from '../assets/img/skills-img.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHtml5, faCss3Alt, faJsSquare, faReact, faNodeJs, faPython, faJava, faGitAlt, faBootstrap, faLinkedin } from '@fortawesome/free-brands-svg-icons';
