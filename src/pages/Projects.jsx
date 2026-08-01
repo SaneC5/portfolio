@@ -1,73 +1,73 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 // importing spenca website image
-import SpencaImg1 from '../assets/img/projects/spenca-1.png';
-import SpencaImg2 from '../assets/img/projects/spenca-2.png';
-import SpencaImg3 from '../assets/img/projects/spenca-3.png';
-import SpencaImg4 from '../assets/img/projects/spenca-4.png';
-import SpencaImg5 from '../assets/img/projects/spenca-5.png';
+import SpencaImg1 from '../assets/img/projects/spenca-1.webp';
+import SpencaImg2 from '../assets/img/projects/spenca-2.webp';
+import SpencaImg3 from '../assets/img/projects/spenca-3.webp';
+import SpencaImg4 from '../assets/img/projects/spenca-4.webp';
+import SpencaImg5 from '../assets/img/projects/spenca-5.webp';
 // importing Skycab website image
-import SkyCabImg1 from '../assets/img/projects/skycab-1.png';
-import SkyCabImg2 from '../assets/img/projects/skycab-2.png';
-import SkyCabImg3 from '../assets/img/projects/skycab-3.png';
-import SkyCabImg4 from '../assets/img/projects/skycab-4.png';
+import SkyCabImg1 from '../assets/img/projects/skycab-1.webp';
+import SkyCabImg2 from '../assets/img/projects/skycab-2.webp';
+import SkyCabImg3 from '../assets/img/projects/skycab-3.webp';
+import SkyCabImg4 from '../assets/img/projects/skycab-4.webp';
 // importing Piano web image
-import PianoImg1 from '../assets/img/projects/piano-1.png';
-import PianoImg2 from '../assets/img/projects/piano-2.png';
+import PianoImg1 from '../assets/img/projects/piano-1.webp';
+import PianoImg2 from '../assets/img/projects/piano-2.webp';
 import PianoImg3 from '../assets/img/projects/piano-3.mp4';
 // importing Age Calculator web image
-import AgeCalImg1 from '../assets/img/projects/agecal-1.png';
+import AgeCalImg1 from '../assets/img/projects/agecal-1.webp';
 import AgeCalImg2 from '../assets/img/projects/agecal-2.mp4';
 // importing Dice Game website image
-import DiceGameImg1 from '../assets/img/projects/dice-1.png';
-import DiceGameImg2 from '../assets/img/projects/dice-2.png';
+import DiceGameImg1 from '../assets/img/projects/dice-1.webp';
+import DiceGameImg2 from '../assets/img/projects/dice-2.webp';
 import DiceGameImg3 from '../assets/img/projects/dice-3.mp4';
 // importing Music Background web image
-import MusicBgImg1 from '../assets/img/projects/musicbg-1.png';
-import MusicBgImg2 from '../assets/img/projects/musicbg-2.png';
+import MusicBgImg1 from '../assets/img/projects/musicbg-1.webp';
+import MusicBgImg2 from '../assets/img/projects/musicbg-2.webp';
 import MusicBgImg3 from '../assets/img/projects/musicbg-3.mp4';
-import MusicBgImg4 from '../assets/img/projects/musicbg-4.png';
+import MusicBgImg4 from '../assets/img/projects/musicbg-4.webp';
 // importing Search Movie web image
-import MovieDbImg1 from '../assets/img/projects/movieDb-1.png';
-import MovieDbImg2 from '../assets/img/projects/movieDb-2.png';
+import MovieDbImg1 from '../assets/img/projects/movieDb-1.webp';
+import MovieDbImg2 from '../assets/img/projects/movieDb-2.webp';
 // importing ESTPL website image
-import estplImg1 from '../assets/img/projects/estpl-1.png';
-import estplImg2 from '../assets/img/projects/estpl-2.png';
+import estplImg1 from '../assets/img/projects/estpl-1.webp';
+import estplImg2 from '../assets/img/projects/estpl-2.webp';
 import estplImg3 from '../assets/img/projects/estpl-3.mp4';
 // importing Kondaji website image
-import KondajiImg1 from '../assets/img/projects/Kondaji-1.png';
-import KondajiImg2 from '../assets/img/projects/Kondaji-2.png';
-import KondajiImg3 from '../assets/img/projects/Kondaji-3.png';
-import KondajiImg4 from '../assets/img/projects/Kondaji-4.png';
-import KondajiImg5 from '../assets/img/projects/Kondaji-5.png';
-import KondajiImg6 from '../assets/img/projects/Kondaji-6.png';
-import KondajiImg7 from '../assets/img/projects/Kondaji-7.png';
-import KondajiImg8 from '../assets/img/projects/Kondaji-8.png';
-import KondajiImg9 from '../assets/img/projects/Kondaji-9.png';
+import KondajiImg1 from '../assets/img/projects/Kondaji-1.webp';
+import KondajiImg2 from '../assets/img/projects/Kondaji-2.webp';
+import KondajiImg3 from '../assets/img/projects/Kondaji-3.webp';
+import KondajiImg4 from '../assets/img/projects/Kondaji-4.webp';
+import KondajiImg5 from '../assets/img/projects/Kondaji-5.webp';
+import KondajiImg6 from '../assets/img/projects/Kondaji-6.webp';
+import KondajiImg7 from '../assets/img/projects/Kondaji-7.webp';
+import KondajiImg8 from '../assets/img/projects/Kondaji-8.webp';
+import KondajiImg9 from '../assets/img/projects/Kondaji-9.webp';
 import KondajiImg10 from '../assets/img/projects/Kondaji-10.mp4';
 // importing Zylyn website image
-import ZylynImg1 from '../assets/img/projects/zylyn-1.png';
-import ZylynImg2 from '../assets/img/projects/zylyn-2.png';
-import ZylynImg3 from '../assets/img/projects/zylyn-3.png';
+import ZylynImg1 from '../assets/img/projects/zylyn-1.webp';
+import ZylynImg2 from '../assets/img/projects/zylyn-2.webp';
+import ZylynImg3 from '../assets/img/projects/zylyn-3.webp';
 // importing Automated calling image
-import AiCallingImg1 from '../assets/img/projects/aiCalling-1.png';
-import AiCallingImg2 from '../assets/img/projects/aiCalling-2.png';
-import AiCallingImg3 from '../assets/img/projects/aiCalling-3.png';
+import AiCallingImg1 from '../assets/img/projects/aiCalling-1.webp';
+import AiCallingImg2 from '../assets/img/projects/aiCalling-2.webp';
+import AiCallingImg3 from '../assets/img/projects/aiCalling-3.webp';
 // importing MPDC website image
-import MPDCImg1 from '../assets/img/projects/mpdc-1.png';
-import MPDCImg2 from '../assets/img/projects/mpdc-2.png';
-import MPDCImg3 from '../assets/img/projects/mpdc-3.png';
+import MPDCImg1 from '../assets/img/projects/mpdc-1.webp';
+import MPDCImg2 from '../assets/img/projects/mpdc-2.webp';
+import MPDCImg3 from '../assets/img/projects/mpdc-3.webp';
 // importing Funndrive website image
-import FunndriveImg1 from '../assets/img/projects/funDrive-1.png';
-import FunndriveImg2 from '../assets/img/projects/funDrive-2.png';
-import FunndriveImg3 from '../assets/img/projects/funDrive-3.png';
-import FunndriveImg4 from '../assets/img/projects/funDrive-4.png';
+import FunndriveImg1 from '../assets/img/projects/funDrive-1.webp';
+import FunndriveImg2 from '../assets/img/projects/funDrive-2.webp';
+import FunndriveImg3 from '../assets/img/projects/funDrive-3.webp';
+import FunndriveImg4 from '../assets/img/projects/funDrive-4.webp';
 // importing Personal website image
-import PortfolioImg1 from '../assets/img/projects/porfolio-1.png';
-import PortfolioImg2 from '../assets/img/projects/porfolio-2.png';
-import PortfolioImg3 from '../assets/img/projects/porfolio-3.png';
-import PortfolioImg4 from '../assets/img/projects/porfolio-4.png';
-import PortfolioImg5 from '../assets/img/projects/porfolio-5.png';
+import PortfolioImg1 from '../assets/img/projects/porfolio-1.webp';
+import PortfolioImg2 from '../assets/img/projects/porfolio-2.webp';
+import PortfolioImg3 from '../assets/img/projects/porfolio-3.webp';
+import PortfolioImg4 from '../assets/img/projects/porfolio-4.webp';
+import PortfolioImg5 from '../assets/img/projects/porfolio-5.webp';
 
 // Sample projects data — replace  paths and URLs with your real project assets
 const MY_PROJECTS = [

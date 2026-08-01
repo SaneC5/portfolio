@@ -1,4 +1,4 @@
-import homeMyProfile from '../assets/img/sc2.jpg'
+import homeMyProfile from '../assets/img/sc2.webp'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
 

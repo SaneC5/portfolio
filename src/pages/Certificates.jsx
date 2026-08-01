@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PgCertificate from '../assets/img/certificates/PgConv.jpg';
-import EstplIntern from '../assets/img/certificates/EstplInternship.jpg';
-import EstplPerformance from '../assets/img/certificates/EstplPerformance.jpg';
-import EstplKondaji from '../assets/img/certificates/EsptlKondaji.jpg';
-import SachiTech from '../assets/img/certificates/SachiTech.png';
-import GuviCertificate from '../assets/img/certificates/GuviCertification.png';
-import iprEvent from '../assets/img/certificates/IPR_EVENT.png';
-import CProgramming from '../assets/img/certificates/Ccertificate.png';
-import EthicalHacking from '../assets/img/certificates/Ethical_hacking_MP_and_NA-1.png';
-import EthicalHackingIntro from '../assets/img/certificates/Introduction to Ethical hacking-1.png';
-import CloudFoundation from '../assets/img/certificates/Cloud Foundation-1.png';
-import CloudComputingArch from '../assets/img/certificates/Cloud Computing Architecture-1.png';
-import CProgBegin from '../assets/img/certificates/C for Beginner-1.png';
+import PgCertificate from '../assets/img/certificates/PgConv.webp';
+import EstplIntern from '../assets/img/certificates/EstplInternship.webp';
+import EstplPerformance from '../assets/img/certificates/EstplPerformance.webp';
+import EstplKondaji from '../assets/img/certificates/EsptlKondaji.webp';
+import SachiTech from '../assets/img/certificates/SachiTech.webp';
+import GuviCertificate from '../assets/img/certificates/GuviCertification.webp';
+import iprEvent from '../assets/img/certificates/IPR_EVENT.webp';
+import CProgramming from '../assets/img/certificates/Ccertificate.webp';
+import EthicalHacking from '../assets/img/certificates/Ethical_hacking_MP_and_NA-1.webp';
+import EthicalHackingIntro from '../assets/img/certificates/Introduction to Ethical hacking-1.webp';
+import CloudFoundation from '../assets/img/certificates/Cloud Foundation-1.webp';
+import CloudComputingArch from '../assets/img/certificates/Cloud Computing Architecture-1.webp';
+import CProgBegin from '../assets/img/certificates/C for Beginner-1.webp';
 
 const CERTIFICATE_IMAGES = [
   { id: 'c13', src: PgCertificate, alt: 'Post Graduate Convocation Certificate' },

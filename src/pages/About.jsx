@@ -3,8 +3,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Observer } from 'gsap/Observer';
 
-import profilePic from '../assets/img/SC.JPG';
-import skillbg from '../assets/img/skills-img.png';
+import profilePic from '../assets/img/SC.webp';
+import skillbg from '../assets/img/skills-img.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHtml5, faCss3Alt, faJsSquare, faReact, faNodeJs, faPython, faJava, faGitAlt, faBootstrap, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faGraduationCap, faPhone, faMapMarkedAlt, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload } from '@fortawesome/free-solid-svg-icons';
