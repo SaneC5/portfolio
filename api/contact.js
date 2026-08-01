@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer';
 
+import { notificationEmail, autoReplyEmail, singleLine } from './_lib/emails.js';
+
 const MIN_ELAPSED_MS = 3000; // fastest a human plausibly fills out the form
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const MAX_PER_WINDOW = Number(process.env.CONTACT_MAX_PER_HOUR) || 5;
@@ -67,13 +69,6 @@ function readBody(req) {
   return null;
 }
 
-// Anything interpolated into a mail header must not carry CR/LF, or a submitter
-// can append headers of their own (a stray `Bcc:`, say) — SMTP header injection.
-const singleLine = (value) => value.replace(/[\r\n]+/g, ' ').trim();
-
-const HTML_ESCAPES = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
-const escapeHtml = (value) => value.replace(/[&<>"']/g, (ch) => HTML_ESCAPES[ch]);
-
 function validate(body) {
   const errors = {};
   const field = (key) => (typeof body[key] === 'string' ? body[key].trim() : '');
@@ -125,26 +120,36 @@ function getTransporter() {
 }
 
 async function sendContactEmail({ name, email, message }) {
-  const safeName = escapeHtml(name);
-  const safeEmail = escapeHtml(email);
-  const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
+  const transporter = getTransporter();
+  const siteUrl = process.env.SITE_URL || '';
 
-  await getTransporter().sendMail({
+  // The notification to the owner is the one that matters: it must succeed for
+  // the request to count as delivered, so it is sent (and awaited) first.
+  const notification = notificationEmail({ name, email, message });
+  await transporter.sendMail({
     from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
     to: process.env.EMAIL_TO,
     replyTo: singleLine(email),
-    subject: `Portfolio Contact: Message from ${singleLine(name)}`,
-    text: `New contact form submission\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n`,
-    html: `
-      <h2>New Contact Form Submission</h2>
-      <p><strong>Name:</strong> ${safeName}</p>
-      <p><strong>Email:</strong> ${safeEmail}</p>
-      <p><strong>Message:</strong></p>
-      <p>${safeMessage}</p>
-      <hr>
-      <p><em>Sent from your portfolio contact form</em></p>
-    `,
+    subject: notification.subject,
+    text: notification.text,
+    html: notification.html,
   });
+
+  // The auto-reply is best-effort: the visitor's address may be fake, full, or
+  // rejecting mail, and none of that should turn a delivered message into an
+  // error. Failures are logged and swallowed.
+  try {
+    const reply = autoReplyEmail({ name, message, siteUrl });
+    await transporter.sendMail({
+      from: `"Sane Chacko" <${process.env.EMAIL_USER}>`,
+      to: singleLine(email),
+      subject: reply.subject,
+      text: reply.text,
+      html: reply.html,
+    });
+  } catch (error) {
+    console.error('Contact form: auto-reply failed (notification was delivered)', error);
+  }
 }
 // ─── End email transport ────────────────────────────────────────────────────
 
