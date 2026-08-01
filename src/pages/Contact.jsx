@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-const initialForm = { name: '', email: '', message: '' };
+// `company` is the honeypot — hidden from people, tempting to form-filling bots.
+const initialForm = { name: '', email: '', message: '', company: '' };
 
 const validate = (values) => {
   const errs = {};
@@ -26,13 +27,19 @@ const Contact = () => {
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null); // 'success' | 'error' | null
+  const [statusMessage, setStatusMessage] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Measured client-side and sent as a duration, not a timestamp, so the server
+  // never has to trust this device's clock.
+  const openedAt = useRef(performance.now());
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((s) => ({ ...s, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined }));
     setStatus(null);
+    setStatusMessage('');
   };
 
   const handleSubmit = async (e) => {
@@ -43,6 +50,7 @@ const Contact = () => {
 
     setLoading(true);
     setStatus(null);
+    setStatusMessage('');
 
     try {
       const response = await fetch('/api/contact', {
@@ -50,19 +58,37 @@ const Contact = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          elapsedMs: Math.round(performance.now() - openedAt.current),
+        }),
       });
 
-      const data = await response.json();
+      // A platform-level failure can return HTML rather than JSON, so parsing
+      // must not be what decides success.
+      let data = {};
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
-      if (data.success) {
+      if (response.ok && data.success) {
         setStatus('success');
         setForm(initialForm);
-      } else {
-        setStatus('error');
+        openedAt.current = performance.now(); // restart the clock for a second message
+        return;
       }
+
+      if (data.errors) setErrors((prev) => ({ ...prev, ...data.errors }));
+      setStatus('error');
+      setStatusMessage(
+        response.status === 429
+          ? data.message || 'Too many messages just now — please try again a little later.'
+          : data.message || ''
+      );
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Contact form submit failed:', error);
       setStatus('error');
     } finally {
       setLoading(false);
@@ -80,6 +106,22 @@ const Contact = () => {
         {/* LEFT: Form */}
         <div className="bg-white/20 shadow-lg sm:rounded-tl-3xl rounded-bl-3xl rounded-br-3xl sm:rounded-br-none p-8 order-2 md:order-1">
           <form onSubmit={handleSubmit} noValidate>
+            {/* Honeypot: positioned off-screen rather than display:none, which
+                the better bots know to skip. Never shown to real visitors. */}
+            <div className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden" aria-hidden="true">
+              <label>
+                Company
+                <input
+                  name="company"
+                  value={form.company}
+                  onChange={handleChange}
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </label>
+            </div>
+
             {/* Full Name */}
             <label className="relative block mb-4">
               <span
@@ -167,7 +209,7 @@ const Contact = () => {
             )}
             {status === 'error' && (
               <div className="mb-4 text-base iceland text-red-700 bg-red-50 p-3" role="alert">
-                Oops — something went wrong. You can also email me directly at <strong>sanechacko555@gmail.com</strong>.
+                {statusMessage || 'Oops — something went wrong.'} You can also email me directly at <strong>sanechacko555@gmail.com</strong>.
               </div>
             )}
 
