@@ -7,8 +7,8 @@ import profilePic from '../assets/img/SC.webp';
 import skillbg from '../assets/img/skills-img.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHtml5, faCss3Alt, faJsSquare, faReact, faNodeJs, faPython, faJava, faGitAlt, faBootstrap, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faGraduationCap, faPhone, faMapMarkedAlt, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload } from '@fortawesome/free-solid-svg-icons';
-import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiCloudera, SiWordpress, SiN8N, SiMake, SiCaldotcom } from 'react-icons/si';
+import { faGraduationCap, faPhone, faMapMarkedAlt, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload, faPlug } from '@fortawesome/free-solid-svg-icons';
+import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiC, SiWordpress, SiN8N, SiMake, SiCaldotcom, SiNextdotjs, SiAstro, SiDocker, SiStripe, SiStrapi } from 'react-icons/si';
 import { DiNodejs, DiVisualstudio } from 'react-icons/di';
 
 const education = [
@@ -74,17 +74,20 @@ const skills = {
     { id: 'html', icon: faHtml5, label: 'HTML5' },
     { id: 'css', icon: faCss3Alt, label: 'CSS3' },
     { id: 'js', icon: faJsSquare, label: 'JS/JSX' },
-    { id: 'c', icon: SiCloudera, label: 'C' },
+    { id: 'c', icon: SiC, label: 'C' },
     { id: 'python', icon: faPython, label: 'Python' },
     { id: 'java', icon: faJava, label: 'Java' }
   ],
   frameworks: [
     { id: 'react', icon: faReact, label: 'React' },
+    { id: 'next', icon: SiNextdotjs, label: 'Next.js' },
+    { id: 'astro', icon: SiAstro, label: 'Astro' },
     { id: 'express', icon: SiExpress, label: 'Express' },
     { id: 'bootstrap', icon: faBootstrap, label: 'Bootstrap' },
     { id: 'tailwind', icon: SiTailwindcss, label: 'Tailwind' }
   ],
   apis: [
+    { id: 'stripe', icon: SiStripe, label: 'Stripe' },
     { id: 'facebook', icon: SiFacebook, label: 'Facebook' },
     { id: 'twilio', icon: SiTwilio, label: 'Twilio' },
     { id: 'googleAuth', icon: SiGoogle, label: 'G. Auth' },
@@ -103,9 +106,14 @@ const skills = {
     { id: 'github', icon: SiGithub, label: 'GitHub' },
     { id: 'postman', icon: SiPostman, label: 'Postman' },
     { id: 'vscode', icon: DiVisualstudio, label: 'VSCode' },
+    { id: 'docker', icon: SiDocker, label: 'Docker' },
     { id: 'vercel', icon: SiVercel, label: 'Vercel' },  // no icon, cloud for deployment
     { id: 'render', icon: SiRender, label: 'Render' },
     { id: 'wordpress', icon: SiWordpress, label: 'WordPress' },
+    { id: 'strapi', icon: SiStrapi, label: 'Strapi' }
+  ],
+  automation: [
+    { id: 'mcp', icon: faPlug, label: 'MCP' },
     { id: 'n8n', icon: SiN8N, label: 'n8n' },
     { id: 'make', icon: SiMake, label: 'Make' },
     { id: 'cal-com', icon: SiCaldotcom, label: 'Cal.com' },

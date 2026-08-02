@@ -13,10 +13,18 @@ import EthicalHackingIntro from '../assets/img/certificates/Introduction to Ethi
 import CloudFoundation from '../assets/img/certificates/Cloud Foundation-1.webp';
 import CloudComputingArch from '../assets/img/certificates/Cloud Computing Architecture-1.webp';
 import CProgBegin from '../assets/img/certificates/C for Beginner-1.webp';
+import ClaudeCode from '../assets/img/certificates/claude-code.webp';
+import ClaudeMcp from '../assets/img/certificates/claude-mcp.webp';
+import ClaudeAgentSkills from '../assets/img/certificates/claude-intro-agent-skill.webp';
+import ClaudeAnthropicApi from '../assets/img/certificates/claude-with-anthropic-api.webp';
 
 // width/height are the intrinsic pixel dimensions of each file, so the browser
 // can reserve the correct aspect ratio before the image loads (CLS fix).
 const CERTIFICATE_IMAGES = [
+  { id: 'c17', src: ClaudeCode, alt: 'Claude Code in Action Certificate - Anthropic', width: 1182, height: 913 },
+  { id: 'c16', src: ClaudeMcp, alt: 'Introduction to Model Context Protocol Certificate - Anthropic', width: 1182, height: 913 },
+  { id: 'c15', src: ClaudeAgentSkills, alt: 'Introduction to Agent Skills Certificate - Anthropic', width: 1183, height: 915 },
+  { id: 'c14', src: ClaudeAnthropicApi, alt: 'Claude with the Anthropic API Certificate - Anthropic', width: 1183, height: 915 },
   { id: 'c13', src: PgCertificate, alt: 'Post Graduate Convocation Certificate', width: 3072, height: 4053 },
   { id: 'c12', src: EstplIntern, alt: 'ESTPL Internship Completion Certificate', width: 3072, height: 4014 },
   { id: 'c11', src: EstplPerformance, alt: 'ESTPL Performance Appreciation Certificate', width: 2654, height: 3499 },
