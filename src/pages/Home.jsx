@@ -10,7 +10,7 @@ const Home = () => {
       <div className="flex flex-col md:flex-row items-center justify-between mt-3 mb-15 w-full">
         <div className="w-3/4 sm:w-2/3 md:w-1/2 lg:w-2/5">
           <img
-            src={homeMyProfile} alt="Sane Chacko" className="w-full h-auto rounded-full ring-1 ring-white ring-offset-5 ring-offset-black shadow-2xl"
+            src={homeMyProfile} alt="Sane Chacko" width={1137} height={1143} fetchPriority="high" className="w-full h-auto rounded-full ring-1 ring-white ring-offset-5 ring-offset-black shadow-2xl"
           />
         </div>
         <div className='md:pl-7'>

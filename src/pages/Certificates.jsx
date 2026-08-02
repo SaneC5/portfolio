@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import FadeImage from '../components/FadeImage';
 import PgCertificate from '../assets/img/certificates/PgConv.webp';
 import EstplIntern from '../assets/img/certificates/EstplInternship.webp';
 import EstplPerformance from '../assets/img/certificates/EstplPerformance.webp';
@@ -13,20 +14,22 @@ import CloudFoundation from '../assets/img/certificates/Cloud Foundation-1.webp'
 import CloudComputingArch from '../assets/img/certificates/Cloud Computing Architecture-1.webp';
 import CProgBegin from '../assets/img/certificates/C for Beginner-1.webp';
 
+// width/height are the intrinsic pixel dimensions of each file, so the browser
+// can reserve the correct aspect ratio before the image loads (CLS fix).
 const CERTIFICATE_IMAGES = [
-  { id: 'c13', src: PgCertificate, alt: 'Post Graduate Convocation Certificate' },
-  { id: 'c12', src: EstplIntern, alt: 'ESTPL Internship Completion Certificate' },
-  { id: 'c11', src: EstplPerformance, alt: 'ESTPL Performance Appreciation Certificate' },
-  { id: 'c10', src: EstplKondaji, alt: 'Kondaji Chivda Project Certificate' },
-  { id: 'c9', src: SachiTech, alt: 'Web Intern Certificate - Sachi Tech' },
-  { id: 'c8', src: GuviCertificate, alt: 'Data Science Certificate - GUVI' },
-  { id: 'c7', src: iprEvent, alt: 'IPR Awareness Event Certificate' },
-  { id: 'c6', src: CProgramming, alt: 'C Programming Certificate' },
-  { id: 'c5', src: EthicalHacking, alt: 'Ethical Hacking Certificate' },
-  { id: 'c4', src: EthicalHackingIntro, alt: 'Introduction to Ethical Hacking Certificate' },
-  { id: 'c3', src: CloudFoundation, alt: 'Cloud Foundation Certificate' },
-  { id: 'c2', src: CloudComputingArch, alt: 'Cloud Computing Architecture Certificate' },
-  { id: 'c1', src: CProgBegin, alt: 'C Programming for Beginners Certificate' },
+  { id: 'c13', src: PgCertificate, alt: 'Post Graduate Convocation Certificate', width: 3072, height: 4053 },
+  { id: 'c12', src: EstplIntern, alt: 'ESTPL Internship Completion Certificate', width: 3072, height: 4014 },
+  { id: 'c11', src: EstplPerformance, alt: 'ESTPL Performance Appreciation Certificate', width: 2654, height: 3499 },
+  { id: 'c10', src: EstplKondaji, alt: 'Kondaji Chivda Project Certificate', width: 2603, height: 3595 },
+  { id: 'c9', src: SachiTech, alt: 'Web Intern Certificate - Sachi Tech', width: 1654, height: 2339 },
+  { id: 'c8', src: GuviCertificate, alt: 'Data Science Certificate - GUVI', width: 1890, height: 1261 },
+  { id: 'c7', src: iprEvent, alt: 'IPR Awareness Event Certificate', width: 2339, height: 1653 },
+  { id: 'c6', src: CProgramming, alt: 'C Programming Certificate', width: 2682, height: 1886 },
+  { id: 'c5', src: EthicalHacking, alt: 'Ethical Hacking Certificate', width: 2339, height: 1653 },
+  { id: 'c4', src: EthicalHackingIntro, alt: 'Introduction to Ethical Hacking Certificate', width: 2339, height: 1653 },
+  { id: 'c3', src: CloudFoundation, alt: 'Cloud Foundation Certificate', width: 2339, height: 1653 },
+  { id: 'c2', src: CloudComputingArch, alt: 'Cloud Computing Architecture Certificate', width: 2339, height: 1653 },
+  { id: 'c1', src: CProgBegin, alt: 'C Programming for Beginners Certificate', width: 2339, height: 1653 },
 ];
 
 const IconLeft = (props) => (
@@ -97,12 +100,15 @@ const Lightbox = ({ open, images = [], startIndex = 0, onClose }) => {
           ✕
         </button>
 
-        {/* image area */}
+        {/* image area — fixed height so the frame never resizes between slides */}
         <div className="relative bg-black overflow-hidden">
-          <img
+          <FadeImage
+            key={images[index]?.src}
             src={images[index]?.src}
             alt={images[index]?.alt || `Certificate ${index + 1}`}
-            className="w-full max-h-[80vh] object-contain bg-black"
+            width={images[index]?.width}
+            height={images[index]?.height}
+            className="w-full h-[80vh] object-contain bg-black"
             loading="eager"
           />
 
@@ -139,35 +145,46 @@ const Lightbox = ({ open, images = [], startIndex = 0, onClose }) => {
    - responsive: columns controlled via Tailwind columns-*
    - items use break-inside-avoid to prevent splitting
    --------------------- */
+const MasonryItem = ({ img, index, onOpen }) => {
+  // Tint the reserved box only while the image loads, so the final look is unchanged.
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <figure
+      className={`mb-4 break-inside-avoid overflow-hidden relative group ${loaded ? '' : 'bg-white/5'}`}
+    >
+      <button
+        type="button"
+        onClick={() => onOpen(index)}
+        className="block w-full text-left"
+        aria-label={`Open certificate ${index + 1}`}
+        style={{ cursor: 'zoom-in' }}
+      >
+        <FadeImage
+          src={img.src}
+          alt={img.alt || `Certificate ${index + 1}`}
+          width={img.width}
+          height={img.height}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          className="w-full h-auto object-cover transform group-hover:scale-105 corner-border"
+          // allow different aspect ratios; width is constrained by column; height auto
+        />
+        {/* overlay when hovered */}
+        <div className="absolute inset-0 flex items-end justify-end p-3 pointer-events-none">
+          <span className="pointer-events-none text-sm bg-white text-black border-2 px-2 uppercase iceland">View</span>
+        </div>
+      </button>
+    </figure>
+  );
+};
+
 const MasonryGrid = ({ images = [], onOpen }) => {
   return (
     <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4"
     >
       {images.map((img, i) => (
-        <figure
-          key={img.id || i}
-          className="mb-4 break-inside-avoid overflow-hidden relative group"
-        >
-          <button
-            type="button"
-            onClick={() => onOpen(i)}
-            className="block w-full text-left"
-            aria-label={`Open certificate ${i + 1}`}
-            style={{ cursor: 'zoom-in' }}
-          >
-            <img
-              src={img.src}
-              alt={img.alt || `Certificate ${i + 1}`}
-              loading="lazy"
-              className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-300 corner-border"
-              // allow different aspect ratios; width is constrained by column; height auto
-            />
-            {/* overlay when hovered */}
-            <div className="absolute inset-0 flex items-end justify-end p-3 pointer-events-none">
-              <span className="pointer-events-none text-sm bg-white text-black border-2 px-2 uppercase iceland">View</span>
-            </div>
-          </button>
-        </figure>
+        <MasonryItem key={img.id || i} img={img} index={i} onOpen={onOpen} />
       ))}
     </div>
   );

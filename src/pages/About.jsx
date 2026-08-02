@@ -414,6 +414,8 @@ const About = () => {
             <img
               src={profilePic}
               alt="Profile — Sane Chacko"
+              width={1542}
+              height={2313}
               className="w-full h-full object-cover"
             />
           </div>
@@ -461,6 +463,8 @@ const About = () => {
             <img
               src={skillbg}
               alt="A Robot handling Tesseract"
+              width={465}
+              height={391}
               className="w-[400px]"
             />
           </div>

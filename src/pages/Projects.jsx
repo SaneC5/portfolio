@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import FadeImage from '../components/FadeImage';
 
 // importing spenca website image
 import SpencaImg1 from '../assets/img/projects/spenca-1.webp';
@@ -315,7 +316,8 @@ const MediaRenderer = ({ media, alt = "Project media", className, controls = fal
   }
 
   return (
-    <img
+    <FadeImage
+      key={src}
       src={src}
       alt={alt}
       className={className}
@@ -510,7 +512,7 @@ const MediaSlider = ({ media = [], onOpen }) => {
                     </div>
                   </>
                 ) : (
-                  <img src={src} alt={`thumb ${i + 1}`} className="w-full h-full object-cover" />
+                  <img src={src} alt={`thumb ${i + 1}`} decoding="async" className="w-full h-full object-cover" />
                 )}
               </button>
             );
