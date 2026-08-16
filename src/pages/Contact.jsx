@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import ScanButton from '../components/ScanButton';
 
 // `company` is the honeypot — hidden from people, tempting to form-filling bots.
 const initialForm = { name: '', email: '', message: '', company: '' };
@@ -214,25 +214,16 @@ const Contact = () => {
             )}
 
             <div className="flex flex-col items-center gap-4">
-              <div className='w-full border-scan ring-1 ring-white ring-offset-4 ring-offset-[#333333]'>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full inline-flex gap-3 items-center justify-center px-5 py-3 bg-white text-black iceland text-xl font-bold uppercase hover:bg-gray-200 hover:shadow-[0_0px_7px_black] transition-shadow disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <>
-                      Sending...
-                      <FontAwesomeIcon icon={faSpinner} spin />
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <FontAwesomeIcon icon={faPaperPlane} />
-                    </>
-                  )}
-                </button>
-              </div>
+              <ScanButton
+                type="submit"
+                disabled={loading}
+                full
+                wrapperClassName="w-full"
+                icon={loading ? faSpinner : faPaperPlane}
+                iconSpin={loading}
+              >
+                {loading ? 'Sending...' : 'Send Message'}
+              </ScanButton>
 
               {/* mailto fallback */}
               <a

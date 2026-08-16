@@ -1,6 +1,6 @@
 import homeMyProfile from '../assets/img/sc2.webp'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import ScanButton from '../components/ScanButton';
 
 
 const Home = () => {
@@ -17,6 +17,9 @@ const Home = () => {
           <div className="text-left">
             <h1 className="text-lg font-extrabold tracking-tight sm:text-2xl md:text-3xl wlcm-head">
               Hello!!!<br/>Welcome to my Personal Website
+              <span className="glow-alt" aria-hidden="true">
+                Hello!!!<br/>Welcome to my Personal Website
+              </span>
             </h1>        
           </div>
           <h1 className="mt-3 max-w-md mx-auto font-[Georgia] text-white text-1xl md:mt-5 lg:text-2xl md:max-w-3xl font-bold">
@@ -29,15 +32,16 @@ const Home = () => {
         <p className='text-right text-2xl md:text-3xl lg:text-4xl'>- Steve Jobs</p>
       </div>
       <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8 ">
-        <div className="shadow border-scan ring-1 ring-white ring-offset-4 ring-offset-black">
-          <a
-            href="/projects"
-            className="w-full inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold text-black iceland uppercase bg-white hover:bg-gray-200 transition-all hover:shadow-[0_0px_7px_black] md:py-4 md:text-xl md:px-10"
-            aria-label="Discover my creations — view projects"
-          >
-            Discover My Creations <FontAwesomeIcon icon={faBriefcase} className='ml-2'/>
-          </a>
-        </div>
+        <ScanButton
+          to="/projects"
+          size="lg"
+          full
+          wrapperClassName="shadow"
+          ariaLabel="Discover my creations — view projects"
+          icon={faBriefcase}
+        >
+          Discover My Creations
+        </ScanButton>
       </div>
         
 

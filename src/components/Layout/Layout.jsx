@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -14,7 +15,11 @@ const Layout = () => {
       <div className="relative z-10 min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow">
-          <Outlet />
+          {/* Fallback reserves a full viewport so the footer doesn't jump up
+              during the brief page-chunk load. */}
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <Outlet />
+          </Suspense>
         </main>
         <Footer />
       </div>

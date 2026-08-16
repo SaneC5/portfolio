@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ScanButton from '../components/ScanButton';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Observer } from 'gsap/Observer';
@@ -360,52 +361,55 @@ const About = () => {
 
     cardsObserver.disable();
 
-    ScrollTrigger.matchMedia({
+    // gsap.matchMedia() (unlike the legacy ScrollTrigger.matchMedia) can be
+    // reverted on unmount; otherwise stale breakpoint handlers from previous
+    // visits re-create duplicate pinned triggers and re-enable a dead
+    // Observer whose preventDefault swallows wheel events — freezing scroll.
+    const mm = gsap.matchMedia();
 
-      // Desktop
-      "(min-width: 1024px)": function () {
-        ScrollTrigger.create({
-          id: "EDUCATION-SCROLL",
-          trigger: ".education-cards-section",
-          pin: true,
-          start: "top 22%",
-          end: "+=100",
-          onEnter: (self) => {
-            if (cardsObserver.isEnabled) return;
-            cardsObserver.enable();
-          },
-          onEnterBack: (self) => {
-            if (cardsObserver.isEnabled) return;
-            cardsObserver.enable();
-          }
-        });
-      },
+    // Desktop
+    mm.add("(min-width: 1024px)", () => {
+      ScrollTrigger.create({
+        id: "EDUCATION-SCROLL",
+        trigger: ".education-cards-section",
+        pin: true,
+        start: "top 22%",
+        end: "+=100",
+        onEnter: (self) => {
+          if (cardsObserver.isEnabled) return;
+          cardsObserver.enable();
+        },
+        onEnterBack: (self) => {
+          if (cardsObserver.isEnabled) return;
+          cardsObserver.enable();
+        }
+      });
+    });
 
-      // Mobile
-      "(max-width: 1023.99px)": function () {
-        ScrollTrigger.create({
-          id: "EDUCATION-SCROLL",
-          trigger: ".education-cards-section",
-          pin: true,
-          start: "top 13%",
-          end: "+=100",
-          onEnter: (self) => {
-            if (cardsObserver.isEnabled) return;
-            cardsObserver.enable();
-          },
-          onEnterBack: (self) => {
-            if (cardsObserver.isEnabled) return;
-            cardsObserver.enable();
-          }
-        });
-      }
-
+    // Mobile
+    mm.add("(max-width: 1023.99px)", () => {
+      ScrollTrigger.create({
+        id: "EDUCATION-SCROLL",
+        trigger: ".education-cards-section",
+        pin: true,
+        start: "top 13%",
+        end: "+=100",
+        onEnter: (self) => {
+          if (cardsObserver.isEnabled) return;
+          cardsObserver.enable();
+        },
+        onEnterBack: (self) => {
+          if (cardsObserver.isEnabled) return;
+          cardsObserver.enable();
+        }
+      });
     });
 
     // Cleanup
     return () => {
-      ScrollTrigger.getById("EDUCATION-SCROLL")?.kill();
+      mm.revert();
       cardsObserver.kill();
+      scrollTimeout.kill();
       tl.kill();
     };
   }, []);
@@ -453,14 +457,9 @@ const About = () => {
             </li>
           </ul>
 
-          <div className="mt-6 inline-block border-scan ring-1 ring-white ring-offset-4 ring-offset-black">
-            <a
-              href="/contact"
-              className="inline-flex items-center gap-3 px-5 py-3 bg-white text-black iceland text-xl font-bold uppercase hover:bg-gray-200 hover:shadow-[0_0px_7px_black] transition-shadow"
-            >
-              Contact Me <FontAwesomeIcon icon={faPhone} />
-            </a>
-          </div>
+          <ScanButton to="/contact" wrapperClassName="mt-6 inline-block" icon={faPhone}>
+            Contact Me
+          </ScanButton>
         </div>
 
         {/* RIGHT: Profile picture */}
@@ -554,17 +553,18 @@ const About = () => {
       </div>
       
       
-      <div className="mt-15 max-w-md mx-auto sm:flex sm:justify-center md:mt-18 download-resume">
-        <div className="shadow border-scan ring-1 ring-white ring-offset-4 ring-offset-black">
-          <a
-            href="/Sane_Resume.pdf"
-            download
-            className="w-full inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-bold text-black iceland uppercase bg-white hover:bg-gray-200 transition-all hover:shadow-[0_0px_7px_black] md:py-4 md:text-xl md:px-10"
-            aria-label="Download My Resume"
-          >
-            Download My Resume <FontAwesomeIcon icon={faDownload} className='ml-2'/>
-          </a>
-        </div>
+      <div className="mt-15 max-w-md mx-auto sm:flex sm:justify-center md:mt-18">
+        <ScanButton
+          href="/Sane_Resume.pdf"
+          download
+          size="lg"
+          full
+          wrapperClassName="shadow"
+          ariaLabel="Download My Resume"
+          icon={faDownload}
+        >
+          Download My Resume
+        </ScanButton>
       </div>
     </section>
   );

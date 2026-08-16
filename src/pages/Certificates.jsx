@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import FadeImage from '../components/FadeImage';
 import PgCertificate from '../assets/img/certificates/PgConv.webp';
 import EstplIntern from '../assets/img/certificates/EstplInternship.webp';
@@ -153,7 +153,7 @@ const Lightbox = ({ open, images = [], startIndex = 0, onClose }) => {
    - responsive: columns controlled via Tailwind columns-*
    - items use break-inside-avoid to prevent splitting
    --------------------- */
-const MasonryItem = ({ img, index, onOpen }) => {
+const MasonryItem = React.memo(({ img, index, onOpen }) => {
   // Tint the reserved box only while the image loads, so the final look is unchanged.
   const [loaded, setLoaded] = useState(false);
 
@@ -185,7 +185,7 @@ const MasonryItem = ({ img, index, onOpen }) => {
       </button>
     </figure>
   );
-};
+});
 
 const MasonryGrid = ({ images = [], onOpen }) => {
   return (
@@ -205,11 +205,13 @@ const Certificates = ({ images = CERTIFICATE_IMAGES }) => {
   const [open, setOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
-  const openAt = (idx) => {
+  // Stable references so the memoized masonry items don't re-render when the
+  // lightbox opens/closes.
+  const openAt = useCallback((idx) => {
     setStartIndex(idx);
     setOpen(true);
-  };
-  const close = () => setOpen(false);
+  }, []);
+  const close = useCallback(() => setOpen(false), []);
 
   return (
     <div className="max-w-[1600px] mx-auto py-12 px-4 sm:px-6 lg:px-8">

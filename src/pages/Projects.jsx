@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import FadeImage from '../components/FadeImage';
+import ScanButton from '../components/ScanButton';
 
 // importing spenca website image
 import SpencaImg1 from '../assets/img/projects/spenca-1.webp';
@@ -537,7 +538,9 @@ const MediaSlider = ({ media = [], onOpen }) => {
               >
                 {type === 'video' ? (
                   <>
-                    <video src={src} className="w-full h-full object-cover" muted />
+                    {/* metadata only — enough for the first-frame thumbnail
+                        without downloading megabytes of video upfront */}
+                    <video src={src} preload="metadata" className="w-full h-full object-cover" muted />
                     <div className="absolute inset-0 flex items-center justify-center bg-black/30">
                       <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M5 3.5v9l7-4.5-7-4.5z"/>
@@ -545,7 +548,7 @@ const MediaSlider = ({ media = [], onOpen }) => {
                     </div>
                   </>
                 ) : (
-                  <img src={src} alt={`thumb ${i + 1}`} decoding="async" className="w-full h-full object-cover" />
+                  <img src={src} alt={`thumb ${i + 1}`} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                 )}
               </button>
             );
@@ -559,7 +562,7 @@ const MediaSlider = ({ media = [], onOpen }) => {
 /* ---------------------
    ProjectCard
    --------------------- */
-const ProjectCard = ({ project, onOpenLightbox }) => {
+const ProjectCard = React.memo(({ project, onOpenLightbox }) => {
   return (
     <article className="bg-black corner-border shadow-sm hover:shadow-md overflow-hidden flex flex-col">
       <MediaSlider media={project.media} onOpen={(startIndex) => onOpenLightbox(project.media, startIndex)} />
@@ -571,21 +574,22 @@ const ProjectCard = ({ project, onOpenLightbox }) => {
             <p className="text-sm text-gray-100 iceland">{project.type}</p>
           </div>
 
-          <div className="ml-4 border-scan self-start">
-            {project.liveUrl ? (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3 py-1.5 bg-white text-black text-sm iceland font-bold uppercase hover:opacity-95"
-                aria-label={`View live site for ${project.title}`}
-              >
-                View Live
-              </a>
-            ) : (
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white text-black text-sm iceland font-bold uppercase hover:opacity-95">Not Live</span>
-            )}
-          </div>
+          {project.liveUrl ? (
+            <ScanButton
+              href={project.liveUrl}
+              external
+              size="sm"
+              ring={false}
+              wrapperClassName="ml-4 self-start"
+              ariaLabel={`View live site for ${project.title}`}
+            >
+              View Live
+            </ScanButton>
+          ) : (
+            <ScanButton size="sm" ring={false} wrapperClassName="ml-4 self-start">
+              Not Live
+            </ScanButton>
+          )}
         </div>
 
         <p className="mt-4 text-lg leading-tight text-gray-100 iceland flex-1">{project.description}</p>
@@ -594,7 +598,7 @@ const ProjectCard = ({ project, onOpenLightbox }) => {
       </div>
     </article>
   );
-};
+});
 
 /* ---------------------
    Projects page (default export)
@@ -604,12 +608,14 @@ const Projects = ({ projects = MY_PROJECTS }) => {
   const [lightboxMedia, setLightboxMedia] = useState([]);
   const [lightboxStartIndex, setLightboxStartIndex] = useState(0);
 
-  const openLightbox = (media, startIndex = 0) => {
+  // Stable references so the memoized cards don't re-render when the
+  // lightbox opens/closes.
+  const openLightbox = useCallback((media, startIndex = 0) => {
     setLightboxMedia(media && media.length ? media : []);
     setLightboxStartIndex(startIndex);
     setLightboxOpen(true);
-  };
-  const closeLightbox = () => setLightboxOpen(false);
+  }, []);
+  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
 
   return (
     <section className="max-w-[1600px] mx-auto py-12 px-4 sm:px-6 lg:px-8 projects">
