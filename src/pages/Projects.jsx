@@ -50,6 +50,11 @@ import KondajiImg10 from '../assets/img/projects/Kondaji-10.mp4';
 import ZylynImg1 from '../assets/img/projects/zylyn-1.webp';
 import ZylynImg2 from '../assets/img/projects/zylyn-2.webp';
 import ZylynImg3 from '../assets/img/projects/zylyn-3.webp';
+import ZylynImg4 from '../assets/img/projects/zylyn-4.webp';
+import ZylynImg5 from '../assets/img/projects/zylyn-5.webp';
+import ZylynImg6 from '../assets/img/projects/zylyn-6.webp';
+import ZylynImg7 from '../assets/img/projects/zylyn-7.webp';
+import ZylynImg8 from '../assets/img/projects/zylyn-8.webp';
 // importing Automated calling image
 import AiCallingImg1 from '../assets/img/projects/aiCalling-1.webp';
 import AiCallingImg2 from '../assets/img/projects/aiCalling-2.webp';
@@ -63,6 +68,13 @@ import FunndriveImg1 from '../assets/img/projects/funDrive-1.webp';
 import FunndriveImg2 from '../assets/img/projects/funDrive-2.webp';
 import FunndriveImg3 from '../assets/img/projects/funDrive-3.webp';
 import FunndriveImg4 from '../assets/img/projects/funDrive-4.webp';
+// importing Zuper website image
+import ZuperImg1 from '../assets/img/projects/zuper-1.webp';
+import ZuperImg2 from '../assets/img/projects/zuper-2.mp4';
+import ZuperImg3 from '../assets/img/projects/zuper-3.webp';
+import ZuperImg4 from '../assets/img/projects/zuper-4.mp4';
+import ZuperImg5 from '../assets/img/projects/zuper-5.mp4';
+import ZuperImg6 from '../assets/img/projects/zuper-6.webp';
 // importing Personal website image
 import PortfolioImg1 from '../assets/img/projects/porfolio-1.webp';
 import PortfolioImg2 from '../assets/img/projects/porfolio-2.webp';
@@ -72,6 +84,22 @@ import PortfolioImg5 from '../assets/img/projects/porfolio-5.webp';
 
 // Sample projects data — replace  paths and URLs with your real project assets
 const MY_PROJECTS = [
+  {
+    id: 'p15',
+    title: 'Zuper - Field Service Platform',
+    type: 'SaaS Marketing Website',
+    builtWith: 'Astro, React, TypeScript (TSX), WordPress (Headless CMS)',
+    liveUrl: 'https://zuper.co/',
+    description: 'Zuper is the marketing website for an AI field service management platform — "The AI Operating System to Run Your Service Business." Built with Astro and TypeScript for static-first performance with interactive React islands, it spans product, industry, and feature pages including Zuper Sense and Zuper Glass, plus a resources hub — blog, case studies, webinars, and eBooks — fetched from a headless WordPress CMS.',
+    media: [
+      { type: 'image', src: ZuperImg1 },
+      { type: 'video', src: ZuperImg2 },
+      { type: 'image', src: ZuperImg3 },
+      { type: 'video', src: ZuperImg4 },
+      { type: 'video', src: ZuperImg5 },
+      { type: 'image', src: ZuperImg6 },
+    ],
+  },
   {
     id: 'p14',
     title: 'Personal Portfolio',
@@ -130,14 +158,19 @@ const MY_PROJECTS = [
   {
     id: 'p10',
     title: 'Zylyn - Accessibility Checker',
-    type: 'Full-Stack Web Application',
-    builtWith: 'HTML, CSS, Bootstrap, JavaScript, Node.js, Express.js, SQL',
+    type: 'Full-Stack SaaS Platform',
+    builtWith: 'Next.js, TypeScript (TSX), Tailwind CSS, Node.js, Express.js, SQL, Stripe, c15t, Chrome Extension',
     liveUrl: 'https://zylyn.co/',
-    description: 'Zylyn is a web accessibility auditing tool that scans any URL for WCAG compliance violations. Features automated accessibility testing, detailed violation reports with severity scores, and database integration for scan history tracking using full-stack architecture.',
+    description: 'Zylyn is a web accessibility auditing platform that scans any URL for WCAG compliance violations. Features a client portal holding every scan across all tracked pages and sitemaps, PDF/UA document validation, score trend history, and Stripe-powered scan credits. A companion Chrome extension audits pages the server cannot reach — such as those behind a login — and saves results straight back to the portal, with c15t handling consent management.',
     media: [
       { type: 'image', src: ZylynImg1 },
       { type: 'image', src: ZylynImg2 },
       { type: 'image', src: ZylynImg3 },
+      { type: 'image', src: ZylynImg4 },
+      { type: 'image', src: ZylynImg5 },
+      { type: 'image', src: ZylynImg6 },
+      { type: 'image', src: ZylynImg7 },
+      { type: 'image', src: ZylynImg8 },
     ],
   },
   {

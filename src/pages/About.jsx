@@ -7,8 +7,8 @@ import profilePic from '../assets/img/SC.webp';
 import skillbg from '../assets/img/skills-img.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHtml5, faCss3Alt, faJsSquare, faReact, faNodeJs, faPython, faJava, faGitAlt, faBootstrap, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faGraduationCap, faPhone, faMapMarkedAlt, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload, faPlug } from '@fortawesome/free-solid-svg-icons';
-import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiC, SiWordpress, SiN8N, SiMake, SiCaldotcom, SiNextdotjs, SiAstro, SiDocker, SiStripe, SiStrapi } from 'react-icons/si';
+import { faGraduationCap, faPhone, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload, faRobot, faCookieBite } from '@fortawesome/free-solid-svg-icons';
+import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiC, SiWordpress, SiN8N, SiMake, SiCaldotcom, SiNextdotjs, SiAstro, SiDocker, SiStripe, SiStrapi, SiTypescript, SiGooglemaps } from 'react-icons/si';
 import { DiNodejs, DiVisualstudio } from 'react-icons/di';
 
 const education = [
@@ -74,6 +74,7 @@ const skills = {
     { id: 'html', icon: faHtml5, label: 'HTML5' },
     { id: 'css', icon: faCss3Alt, label: 'CSS3' },
     { id: 'js', icon: faJsSquare, label: 'JS/JSX' },
+    { id: 'ts', icon: SiTypescript, label: 'TS/TSX' },
     { id: 'c', icon: SiC, label: 'C' },
     { id: 'python', icon: faPython, label: 'Python' },
     { id: 'java', icon: faJava, label: 'Java' }
@@ -92,15 +93,15 @@ const skills = {
     { id: 'twilio', icon: SiTwilio, label: 'Twilio' },
     { id: 'googleAuth', icon: SiGoogle, label: 'G. Auth' },
     { id: 'linkedin', icon: faLinkedin, label: 'LinkedIn' },
-    { id: 'googleMaps', icon: faMapMarkedAlt, label: 'G. Map' },
-    { id: 'googleCaptcha', icon: SiGoogle, label: 'G. Captc...' }
+    { id: 'googleMaps', icon: SiGooglemaps, label: 'G. Map' },
+    { id: 'googleCaptcha', icon: faRobot, label: 'G. Captc...' }
   ],
   databases: [
     { id: 'mongo', icon: SiMongodb, label: 'MongoDB' },
     { id: 'mysql', icon: SiMysql, label: 'MySQL' },
     { id: 'postgresql', icon: SiPostgresql, label: 'PostgreSQL' }
   ],
-  tools: [
+  'tools & platforms': [
     { id: 'node', icon: DiNodejs, label: 'Node.js' },
     { id: 'git', icon: faGitAlt, label: 'Git' },
     { id: 'github', icon: SiGithub, label: 'GitHub' },
@@ -110,12 +111,58 @@ const skills = {
     { id: 'vercel', icon: SiVercel, label: 'Vercel' },  // no icon, cloud for deployment
     { id: 'render', icon: SiRender, label: 'Render' },
     { id: 'wordpress', icon: SiWordpress, label: 'WordPress' },
-    { id: 'strapi', icon: SiStrapi, label: 'Strapi' }
+    { id: 'strapi', icon: SiStrapi, label: 'Strapi' },
+    { id: 'c15t', icon: faCookieBite, label: 'c15t' }
   ],
   automation: [
-    { id: 'mcp', icon: faPlug, label: 'MCP' },
+    { id: 'mcp', icon: () => ( <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 180 180"
+          fill="none"
+        >
+          <path d="M18 84.8528L85.8822 16.9706C95.2548 7.59798 110.451 7.59798 119.823 16.9706V16.9706C129.196 26.3431 129.196 41.5391 119.823 50.9117L68.5581 102.177" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/>
+          <path d="M69.2652 101.47L119.823 50.9117C129.196 41.5391 144.392 41.5391 153.765 50.9117L154.118 51.2652C163.491 60.6378 163.491 75.8338 154.118 85.2063L92.7248 146.6C89.6006 149.724 89.6006 154.789 92.7248 157.913L105.331 170.52" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/>
+          <path d="M102.853 33.9411L52.6482 84.1457C43.2756 93.5183 43.2756 108.714 52.6482 118.087V118.087C62.0208 127.459 77.2167 127.459 86.5893 118.087L136.794 67.8822" stroke="currentColor" strokeWidth="12" strokeLinecap="round"/>
+        </svg>
+      ),
+      label: 'MCP'
+    },
     { id: 'n8n', icon: SiN8N, label: 'n8n' },
     { id: 'make', icon: SiMake, label: 'Make' },
+    { id: 'anythingllm', icon: () => ( <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 245 245"
+          fill="currentColor"
+        >
+          <path d="M187.82 158.21v-72.5a.4.4 0 0 0-.4-.4h-25.49a1.81 1.8 18.9 0 0-1.42.69q-33.16 42.4-65.04 83.18-4.34 5.55-12.63 5.47-10.26-.09-22.81.07-7.4.09-10.66-1.5-5.05-2.47-7.05-7.65-1.09-2.8-1.05-7.46.28-37.24-.02-70.84-.06-6.28 1.38-9.13c2.81-5.53 7.74-8.21 13.93-8.18q15.04.09 27.62.04c5.48-.02 9.45 2.73 12.73 7.34q6.12 8.6 12.91 17.73.41.55.46 1.23c.1 1.49.32 3.06-.58 4.37q-2.1 3.05-4.22 5.16c-2.41 2.38-6.01 1.53-7.87-1.12q-7.1-10.11-13.98-19.09a.8.79 71 0 0-.63-.31H57.3q-.64 0-.64.64l-.01 72.5q0 .55.56.55h25.38a2.37 2.35-70.9 0 0 1.86-.91q32.58-41.63 64.63-82.6c3.02-3.86 7.31-5.6 12.29-5.55q12.57.14 24.86-.02 5.67-.07 8.94 1.43c4.8 2.21 8.04 7.06 8.03 12.39q-.04 40.1.03 76.89c.01 8.09-6.59 13.89-14.44 13.97q-14.85.13-28.3-.03-7.75-.1-12.27-6.59-6-8.59-11.78-16.56c-2.79-3.86-.01-7.25 3.05-10.75 2.31-2.66 6.29-2.81 8.4.14l12.59 17.67a1.24 1.24 0 0 0 1.01.52h25.54q.79 0 .79-.79" />
+        </svg>
+      ),
+      label: 'AnythingLLM'
+    },
+    { id: 'wati', icon: () => ( <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 125.92 108.5"
+          fill="currentColor"
+        >
+          <path d="M36.56,86.33h37.13l22.19,22.17v-22.17h9.48c11.31,0,20.56-9.25,20.56-20.56v-29.2c0-11.31-9.25-20.56-20.56-20.56H36.56c-11.31,0-20.56,9.25-20.56,20.56v29.2c0,11.31,9.25,20.56,20.56,20.56Z" />
+          <path d="M83.9,102.17l-23.86-23.84H24.56c-13.54,0-24.56-11.02-24.56-24.56V24.56C0,11.02,11.02,0,24.56,0H93.36c13.54,0,24.56,11.02,24.56,24.56v29.2c0,13.54-11.02,24.56-24.56,24.56h-9.48v-8h9.48c9.13,0,16.56-7.43,16.56-16.56V24.56c0-9.13-7.43-16.56-16.56-16.56H24.56c-9.13,0-16.56,7.43-16.56,16.56v29.2c0,9.13,7.43,16.56,16.56,16.56H63.35l20.62,20.6-.07,11.24Z" />
+        </svg>
+      ),
+      label: 'Wati'
+    },
+    { id: 'astra', icon: () => ( <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 28 30"
+          fill="none"
+        >
+          <path fillRule="evenodd" clipRule="evenodd" d="M13.9475 8.11966L24.913 15.0971L28 13.1407V10.9995C28 9.16688 27.1035 7.46478 25.6305 6.50062L24.7377 5.91621C23.11 5.14088 19.1724 3.92428 13.9475 8.11966Z" fill="currentColor" fillOpacity="0.55" />
+          <path fillRule="evenodd" clipRule="evenodd" d="M24.7512 5.94676C22.6029 4.77289 18.5591 5.16064 16.5027 6.507L16.5018 6.50757L0 16.9426V10.972C0 9.10915 0.925989 7.38362 2.4379 6.42907L11.4379 0.746925C13.0162 -0.249507 14.9854 -0.249425 16.562 0.749875C19.4005 2.54899 21.0721 3.62131 24.7512 5.94676Z" fill="currentColor" />
+          <path fillRule="evenodd" clipRule="evenodd" d="M14 21.9106L3.08694 14.9863L0 16.9427V19.0448C0 20.8987 0.917144 22.6172 2.41746 23.5748L2.93832 23.9072C3.16727 24.0533 3.40432 24.1824 3.65702 24.2748C5.22666 24.8489 9.22105 25.7479 14 21.9106Z" fill="currentColor" fillOpacity="0.55" />
+          <path fillRule="evenodd" clipRule="evenodd" d="M3.24878 24.0535C5.39707 25.2273 9.44087 24.8396 11.4973 23.4932L11.4982 23.4926L28 13.0576V19.0282C28 20.8911 27.074 22.6166 25.5621 23.5711L16.5621 29.2533C14.9838 30.2497 13.0146 30.2496 11.438 29.2503C8.59943 27.4512 6.92786 26.3789 3.24878 24.0535Z" fill="currentColor" />
+        </svg>
+      ),
+      label: 'Astra (Wati)'
+    },
     { id: 'cal-com', icon: SiCaldotcom, label: 'Cal.com' },
     { id: 'retell', icon: () => ( <svg
           xmlns="http://www.w3.org/2000/svg"
