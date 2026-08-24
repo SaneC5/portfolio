@@ -76,6 +76,8 @@ import ZuperImg3 from '../assets/img/projects/zuper-3.webp';
 import ZuperImg4 from '../assets/img/projects/zuper-4.mp4';
 import ZuperImg5 from '../assets/img/projects/zuper-5.mp4';
 import ZuperImg6 from '../assets/img/projects/zuper-6.webp';
+import ZuperImg7 from '../assets/img/projects/zuper-7.webp';
+import ZuperImg8 from '../assets/img/projects/zuper-8.webp';
 // importing Personal website image
 import PortfolioImg1 from '../assets/img/projects/porfolio-1.webp';
 import PortfolioImg2 from '../assets/img/projects/porfolio-2.webp';
@@ -99,6 +101,8 @@ const MY_PROJECTS = [
       { type: 'video', src: ZuperImg4 },
       { type: 'video', src: ZuperImg5 },
       { type: 'image', src: ZuperImg6 },
+      { type: 'image', src: ZuperImg7 },
+      { type: 'image', src: ZuperImg8 },
     ],
   },
   {
@@ -106,7 +110,7 @@ const MY_PROJECTS = [
     title: 'Personal Portfolio',
     type: 'Portfolio Website',
     builtWith: 'React (Vite), Tailwind CSS, GSAP, Express.js, Node.js',
-    liveUrl: 'https://portfolio-4h0m.onrender.com/',
+    liveUrl: 'https://sanechacko.vercel.app/',
     description: 'Personal Portfolio is a modern, animated showcase featuring projects, certificates, and contact sections. Built with React and Vite for optimal performance, styled with Tailwind CSS, enhanced with GSAP animations, and integrated with Node.js backend for contact form submissions.',
     media: [
       { type: 'image', src: PortfolioImg1 },

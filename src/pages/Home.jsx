@@ -14,14 +14,8 @@ const Home = () => {
           />
         </div>
         <div className='md:pl-7'>
-          <div className="text-left">
-            <h1 className="text-lg font-extrabold tracking-tight sm:text-2xl md:text-3xl wlcm-head">
-              Hello!!!<br/>Welcome to my Personal Website
-              <span className="glow-alt" aria-hidden="true">
-                Hello!!!<br/>Welcome to my Personal Website
-              </span>
-            </h1>        
-          </div>
+          {/* The "Hello!!! Welcome..." greeting now lives in the intro loader
+              (IntroLoader), so the hero doesn't repeat it. */}
           <h1 className="mt-3 max-w-md mx-auto font-[Georgia] text-white text-1xl md:mt-5 lg:text-2xl md:max-w-3xl font-bold">
             I'm,<br/><span className="text-6xl sm:text-5xl md:text-[4.5rem] lg:text-[6rem] big-shoulder my-name-home">Sane Chacko...</span><br/>a <span className='text-3xl sm:text-4xl iceland'>Full Stack Web Developer</span>,<br/>passionate about creating amazing web experiences.
           </h1>

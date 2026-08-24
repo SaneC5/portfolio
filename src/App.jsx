@@ -1,6 +1,7 @@
 import { lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
+import IntroLoader from './components/IntroLoader/IntroLoader';
 
 // Each page loads as its own chunk, so the initial bundle stays small and
 // heavy per-page dependencies (GSAP, icon sets) load only when visited.
@@ -24,6 +25,10 @@ const ScrollToTop = () => {
 function App() {
   return (
     <Router>
+      {/* First-visit welcome loader. Stays in the eager bundle so it paints
+          before the lazy routes; it also prefetches the Home chunk + hero
+          image, so the reveal underneath is instant. */}
+      <IntroLoader />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>

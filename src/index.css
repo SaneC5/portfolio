@@ -77,6 +77,25 @@
     to   { opacity: 1; }
 }
 
+/* Intro loader runs the site's warm accent: same glow stacks as .wlcm-head
+   but in orangered, so nothing cyan appears anywhere in the loader (covers
+   the fallback greeting and the small-screen welcome line). */
+.intro-loader .wlcm-head{
+    text-shadow: 0 0 10px orangered, 0 0 20px orangered, 0 0 30px orangered, 0 0 40px orangered, 0 0 50px orangered, 0 0 60px orangered, 0 0 70px orangered, 0 0 90px orangered;
+}
+.intro-loader .wlcm-head .glow-alt{
+    text-shadow: 0 0 20px orangered, 0 0 30px orangered, 0 0 40px orangered, 0 0 50px orangered, 0 0 60px orangered, 0 0 70px orangered, 0 0 80px orangered, 0 0 90px orangered;
+}
+
+/* Reduced motion: freeze the breathing glow at a mid state instead of pulsing.
+   Covers the intro loader and any other wlcm-head usage. */
+@media (prefers-reduced-motion: reduce) {
+    .wlcm-head .glow-alt {
+        animation: none;
+        opacity: 0.6;
+    }
+}
+
 .my-name-home{
     background: linear-gradient(90deg, rgb(255, 0, 0), orangered, orange, rgb(17, 80, 255));
     background-clip: text;
