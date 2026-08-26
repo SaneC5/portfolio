@@ -14,6 +14,10 @@ const Layout = () => {
 
       <div className="relative z-10 min-h-screen flex flex-col">
         <Header />
+        {/* The header is fixed so it can float over the hero; this stands in
+            for it in the flow. Header.jsx keeps --nav-h in sync with the real
+            bar height. */}
+        <div aria-hidden="true" className="h-[var(--nav-h)]" />
         <main className="flex-grow">
           {/* Fallback reserves a full viewport so the footer doesn't jump up
               during the brief page-chunk load. */}

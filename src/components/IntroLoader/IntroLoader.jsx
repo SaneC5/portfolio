@@ -80,6 +80,10 @@ const IntroLoader = () => {
     if (finishedRef.current) return;
     finishedRef.current = true;
     const fadeOut = () => {
+      // Announce that the page beneath is being revealed — the nav's
+      // entrance choreography keys off this. Every exit path (burst, skip,
+      // fallback) funnels through here.
+      window.dispatchEvent(new Event('intro:reveal'));
       setPhase('exiting');
       setTimeout(() => setPhase('gone'), 800);
     };

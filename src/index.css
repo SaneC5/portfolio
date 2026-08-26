@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Codystar:300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700&family=Iceland&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap');
+/* Fonts (Codystar, Big Shoulders Display, Iceland, Oswald) load from
+   index.html — preconnect + preload + a single stylesheet link — so the
+   browser discovers them at document parse instead of after this file
+   arrives. @import here serialized the requests behind the app CSS. */
 @import "tailwindcss";
 
 .iceland{
@@ -13,44 +14,204 @@
     font-family: 'Oswald', sans-serif;
 }
 
-.my-name-nav{
-    font-family:"Brush Script MT",cursive;
-    text-shadow:
-        2px 2px 1px white,  
-        -2px -2px 1px white, 
-        2px -2px 1px white,  
-        -2px 2px 1px white; 
+/* navigation *****************************************************************
+   The header is fixed (it floats over the hero, then keeps its place once the
+   surface fades in), so it is out of flow and Layout reserves its height with
+   a spacer sized by --nav-h. Header.jsx measures the bar and overwrites the
+   variable — the wordmark's webfont swapping in changes the bar's height — so
+   the values here are only the pre-measurement defaults.
+*/
+:root {
+    --nav-h: 68px;
+    --nav-accent: rgb(243, 64, 23);
+    --nav-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    /* Wordmark tracking at rest and on hover. The hover value also sizes the
+       ghost that reserves the wordmark's width up front. */
+    --wordmark-track: 0.16em;
+    --wordmark-track-hover: 0.24em;
+    /* Side inset of the floating (scrolled) bar: hugs the content column
+       (max-w-7xl = 80rem) on wide screens, 12px gutters on small ones. */
+    --nav-inset: max(0.75rem, calc((100vw - 80rem) / 2 + 1rem));
+}
+@media (min-width: 640px) {
+    :root { --nav-h: 130px; }
 }
 
+/* Wordmark -------------------------------------------------------------------
+   Hover slowly opens the letter-spacing of the whole name — both words as
+   one object. The width the name needs at its WIDEST (hover) tracking is
+   reserved up front by an invisible ghost copy, which alone drives the box's
+   size; the visible layer is absolutely positioned inside that fixed box, so
+   nothing outside it can move by a pixel at any point in the animation.
+
+   Letter-spacing hangs an extra gap off the last glyph, which would drag the
+   optical centre left of the box centre. Both layers cancel it with a
+   negative margin; on the visible layer that margin transitions in lockstep
+   with the tracking (same duration and easing), so the name stays optically
+   centred through every frame, not just at the endpoints.
+*/
+.wordmark {
+    position: relative;
+    display: block;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    line-height: 0.9;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.wordmark-ghost {
+    display: block;
+    visibility: hidden;
+    letter-spacing: var(--wordmark-track-hover);
+    margin-right: calc(-1 * var(--wordmark-track-hover));
+}
+
+.wordmark-live {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.wordmark-text {
+    letter-spacing: var(--wordmark-track);
+    margin-right: calc(-1 * var(--wordmark-track));
+    /* Slow and gentle — a clearly different pace from the 0.4s underlines. */
+    transition: letter-spacing 0.9s var(--nav-ease), margin-right 0.9s var(--nav-ease);
+}
+
+.wordmark-link:hover .wordmark-text,
+.wordmark-link:focus-visible .wordmark-text {
+    letter-spacing: var(--wordmark-track-hover);
+    margin-right: calc(-1 * var(--wordmark-track-hover));
+}
+
+.wordmark-accent {
+    color: var(--nav-accent);
+}
+
+.wordmark-sub {
+    font-family: 'Iceland', cursive;
+    letter-spacing: 0.42em;
+    margin-right: -0.42em;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* Links ----------------------------------------------------------------------
+   The rule at rest and the rule on hover are the same element, so the active
+   page reads as "already hovered" rather than as a different size — nothing
+   reflows when you move across the nav.
+*/
 .nav-link {
     position: relative;
-    padding-bottom: 5px;  
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.58);
+    transition: color 0.35s var(--nav-ease), translate 0.35s var(--nav-ease);
 }
 
 .nav-link::after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1.2px;
-    background: #e8e8e8;
+    /* matches the trailing letter-space, so the rule stops under the last glyph */
+    right: 0.16em;
+    bottom: -7px;
+    height: 1.5px;
+    border-radius: 1px;
+    /* Solid fill, scaleX only. A gradient fill compresses while the line
+       grows — its bright stop stays subpixel until late in the animation and
+       then pops in, which reads as the width jumping. With a solid fill the
+       only thing that changes is length; thickness is constant (Y is never
+       scaled). */
+    background: rgba(255, 255, 255, 0.85);
     transform: scaleX(0);
-    transform-origin: bottom left;
-    transition: transform 0.3s ease-out;
-    box-shadow: 0 0 3px rgb(255, 255, 255);
+    /* Directional wipe: the hover rule flips the origin to the left edge, so
+       the line enters left-to-right; on exit it returns to this origin and
+       collapses toward the right — passing through rather than retreating
+       the way it came. */
+    transform-origin: right center;
+    transition: transform 0.4s var(--nav-ease);
 }
 
-.nav-link:hover::after {
+.nav-link:hover,
+.nav-link:focus-visible {
+    color: #fff;
+    translate: 0 -1px;
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link.is-active::after {
     transform: scaleX(1);
-    background: linear-gradient(to right, white 70%, rgb(0, 94, 255));
+    transform-origin: left center;
 }
 
-.nav-link.underline-active::after {
-  transform: scaleX(1);
-  background: linear-gradient(to right, rgb(249,46,0), rgb(109, 143, 255));
-  box-shadow: 0 0 0px rgb(255, 255, 255) !important;
+.nav-link.is-active {
+    color: #fff;
 }
+
+/* Same geometry and growth as the hover rule — only the colour differs. */
+.nav-link.is-active::after {
+    background: var(--nav-accent);
+}
+
+/* Stacked (mobile) rows: the underline is a desktop idiom, so the active page
+   is marked with an accent dash instead. It sits in the panel's left gutter
+   (the container's px-8 padding), so the label itself never shifts. */
+.nav-link--stacked::after {
+    display: none;
+}
+
+.nav-link--stacked.is-active::before {
+    content: '';
+    position: absolute;
+    left: -1.375rem;
+    top: 50%;
+    translate: 0 -50%;
+    width: 0.875rem;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--nav-accent);
+}
+
+.nav-link:focus-visible,
+.wordmark-link:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 8px;
+    border-radius: 2px;
+}
+
+/* Menu button ---------------------------------------------------------------- */
+.nav-burger-line {
+    position: absolute;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: translate 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+                rotate 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+                opacity 0.25s ease,
+                scale 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-header *,
+    .site-header *::after {
+        transition-duration: 1ms !important;
+        /* Also collapse the entrance stagger — 1ms hops firing in sequence
+           would still read as motion. */
+        transition-delay: 0ms !important;
+    }
+}
+/* navigation end *************************************************************/
 
 /* Breathing glow, cheap version: the two glow states live on two stacked
    text layers with STATIC text-shadows (each rasterized once), and only the
