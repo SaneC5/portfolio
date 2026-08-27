@@ -9,7 +9,7 @@ import skillbg from '../assets/img/skills-img.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHtml5, faCss3Alt, faJsSquare, faReact, faNodeJs, faPython, faJava, faGitAlt, faBootstrap, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import { faGraduationCap, faPhone, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload, faRobot, faCookieBite } from '@fortawesome/free-solid-svg-icons';
-import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiC, SiWordpress, SiN8N, SiMake, SiCaldotcom, SiNextdotjs, SiAstro, SiDocker, SiStripe, SiStrapi, SiTypescript, SiGooglemaps } from 'react-icons/si';
+import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiC, SiWordpress, SiN8N, SiMake, SiCaldotcom, SiNextdotjs, SiAstro, SiDocker, SiStripe, SiStrapi, SiTypescript, SiGooglemaps, SiGreensock, SiWebgl } from 'react-icons/si';
 import { DiNodejs, DiVisualstudio } from 'react-icons/di';
 
 const education = [
@@ -86,7 +86,8 @@ const skills = {
     { id: 'astro', icon: SiAstro, label: 'Astro' },
     { id: 'express', icon: SiExpress, label: 'Express' },
     { id: 'bootstrap', icon: faBootstrap, label: 'Bootstrap' },
-    { id: 'tailwind', icon: SiTailwindcss, label: 'Tailwind' }
+    { id: 'tailwind', icon: SiTailwindcss, label: 'Tailwind' },
+    { id: 'gsap', icon: SiGreensock, label: 'GSAP' }
   ],
   apis: [
     { id: 'stripe', icon: SiStripe, label: 'Stripe' },
@@ -95,7 +96,8 @@ const skills = {
     { id: 'googleAuth', icon: SiGoogle, label: 'G. Auth' },
     { id: 'linkedin', icon: faLinkedin, label: 'LinkedIn' },
     { id: 'googleMaps', icon: SiGooglemaps, label: 'G. Map' },
-    { id: 'googleCaptcha', icon: faRobot, label: 'G. Captc...' }
+    { id: 'googleCaptcha', icon: faRobot, label: 'G. Captc...' },
+    { id: 'webgl', icon: SiWebgl, label: 'WebGL' }
   ],
   databases: [
     { id: 'mongo', icon: SiMongodb, label: 'MongoDB' },

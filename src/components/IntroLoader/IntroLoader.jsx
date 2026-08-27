@@ -27,7 +27,11 @@ const IntroLoader = () => {
   const canvasRef = useRef(null);
   const textCanvasRef = useRef(null);
   const sceneRef = useRef(null);
-  const finishedRef = useRef(false);
+  // Two separate latches. `exitedRef` guards the fade-out itself (it may only
+  // ever start once). `naturalRef` guards the natural finish, which waits on
+  // the scene's hold-and-burst — a wait that must stay preemptible by SKIP.
+  const exitedRef = useRef(false);
+  const naturalRef = useRef(false);
 
   const progress = useLoadProgress(phase === 'loading');
 
@@ -76,24 +80,41 @@ const IntroLoader = () => {
     if (webgl === 'active' && sceneRef.current) sceneRef.current.setProgress(progress);
   }, [progress, webgl]);
 
-  const finish = useCallback((skipped) => {
-    if (finishedRef.current) return;
-    finishedRef.current = true;
-    const fadeOut = () => {
-      // Announce that the page beneath is being revealed — the nav's
-      // entrance choreography keys off this. Every exit path (burst, skip,
-      // fallback) funnels through here.
-      window.dispatchEvent(new Event('intro:reveal'));
-      setPhase('exiting');
-      setTimeout(() => setPhase('gone'), 800);
-    };
-    // Skipping bypasses the hold + burst so the exit is immediate.
-    if (sceneRef.current && !skipped) {
-      sceneRef.current.burst().then(fadeOut);
-    } else {
-      fadeOut();
-    }
+  // Idempotent: the fade may only ever start once, whichever path gets here
+  // first. Announces that the page beneath is being revealed — the nav's
+  // entrance choreography keys off this. Every exit path (burst, skip,
+  // fallback) funnels through here.
+  const beginExit = useCallback(() => {
+    if (exitedRef.current) return;
+    exitedRef.current = true;
+    window.dispatchEvent(new Event('intro:reveal'));
+    setPhase('exiting');
+    setTimeout(() => setPhase('gone'), 800);
   }, []);
+
+  const finish = useCallback(
+    (skipped) => {
+      if (exitedRef.current) return;
+      // SKIP always wins. A natural finish fires the moment loading completes
+      // — on a warm cache that is a few hundred ms in — and then sits waiting
+      // on the scene's hold-and-burst for several seconds. When a single
+      // latch guarded both paths, that wait left the button dead for nearly
+      // the whole animation.
+      if (skipped) {
+        beginExit();
+        return;
+      }
+      if (naturalRef.current) return;
+      naturalRef.current = true;
+      // beginExit is idempotent, so a burst resolving after a skip is a no-op.
+      if (sceneRef.current) {
+        sceneRef.current.burst().then(beginExit);
+      } else {
+        beginExit();
+      }
+    },
+    [beginExit]
+  );
 
   // Float-safe completion check (the weights sum to 1 within epsilon).
   // On fast connections loading can complete before the particle chunk has
@@ -196,7 +217,7 @@ const IntroLoader = () => {
       <button
         type="button"
         onClick={() => finish(true)}
-        className="iceland absolute right-5 bottom-5 border border-[orangered]/50 px-4 py-1 text-lg tracking-widest text-white/60 transition-colors hover:border-[orangered] hover:text-[orangered] focus:border-[orangered] focus:text-[orangered]"
+        className="iceland absolute right-5 bottom-5 border border-[orangered]/50 px-4 py-1 text-lg tracking-widest text-white/60 cursor-pointer transition-colors hover:border-[orangered] hover:text-[orangered] focus:border-[orangered] focus:text-[orangered]"
       >
         SKIP
       </button>
