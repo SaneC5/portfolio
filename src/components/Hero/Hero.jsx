@@ -197,7 +197,7 @@ const Hero = () => {
                   {/* Right dimension line, gapped for its label */}
                   <path className="hud-stroke hud-draw" d="M428 30 V240 M428 320 V530 M422 30 H434 M422 530 H434" />
                   <text className="hud-fade" x="428" y="280" textAnchor="middle" transform="rotate(90 428 280)">
-                    S.CHACKO
+                    SANE.C
                   </text>
                   {/* Measurement rail — ruler ticks along the left edge.
                       Majors every 100 units (longer), minors every 20. All on

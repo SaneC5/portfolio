@@ -1,0 +1,436 @@
+/* Footer — the drawing's endcap *********************************************
+   Bookends the hero: the same masked line reveal that brought SANE CHACKO.
+   in at the top plays "LET'S TALK." out at the bottom, over a title-block
+   utility strip (© / index / channels / top). Ships in the eager bundle with
+   the header, so — like the header — every entrance is a CSS transition
+   driven by one state class (.is-shown, set by Footer.jsx when the footer
+   first scrolls into view). No GSAP here by design: the eager bundle stays
+   GSAP-free.
+
+   Eases mirror the hero timeline's GSAP curves:
+     power3.out  -> cubic-bezier(0.165, 0.84, 0.44, 1)   (fades, rises)
+     power4.out  -> cubic-bezier(0.23, 1, 0.32, 1)       (the masked slide)
+     power2.inOut-> cubic-bezier(0.645, 0.045, 0.355, 1) (the rule draw)
+   Ink tiers are the hero's ladder, re-declared because those custom
+   properties are scoped to .hero. */
+
+.site-footer {
+    --ink-body: #c9c9c9;
+    --ink-label: #a6a6a6;
+    --ink-faint: #969696;
+    --accent-ink: #ff5a1f;
+    --ease-out-3: cubic-bezier(0.165, 0.84, 0.44, 1);
+    --ease-out-4: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out-2: cubic-bezier(0.645, 0.045, 0.355, 1);
+    /* The CTA's fluid size, shared so the quote's baseline nudge can be
+       computed in the CTA's units. */
+    --cta-size: clamp(3.2rem, 10vw, 9rem);
+    overflow: hidden;
+}
+
+/* Kicker --------------------------------------------------------------------*/
+
+.footer-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.32em;
+    color: var(--ink-label);
+    opacity: 0;
+    translate: 0 10px;
+    transition: opacity 0.5s var(--ease-out-3), translate 0.5s var(--ease-out-3);
+}
+
+.site-footer.is-shown .footer-kicker {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.footer-kicker-rule {
+    flex: none;
+    width: 2.75rem;
+    height: 1px;
+    background: orangered;
+    box-shadow: 0 0 8px rgba(255, 69, 0, 0.8);
+}
+
+/* CTA + quote row. Phones: a column with the quote ordered first, so the
+   stack reads kicker -> quote -> LET'S TALK, exactly as before. From 640px:
+   one row, quote pushed to the right edge and sat on the CTA's baseline. */
+.footer-endcap-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* The personal-statement quote, set legibly: Oswald sentence case (the
+   hero-tagline's body voice), not tracked Iceland caps. */
+.footer-quote {
+    order: -1;
+    margin-top: 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: var(--ink-body);
+    opacity: 0;
+    translate: 0 10px;
+    transition: opacity 0.5s var(--ease-out-3), translate 0.5s var(--ease-out-3);
+}
+
+.site-footer.is-shown .footer-quote {
+    opacity: 1;
+    translate: 0 0;
+}
+
+@media (min-width: 640px) {
+    .footer-endcap-main {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 3rem;
+    }
+
+    .footer-quote {
+        order: 0;
+        margin-top: 0;
+        max-width: 30rem;
+        text-align: right;
+        /* Optical baseline seat. The CTA's masked line hides its text
+           baseline from CSS alignment (overflow creates a BFC), so the row
+           bottom-aligns boxes instead, and this lifts the quote so its last
+           line sits on the giant baseline: the CTA box runs ~0.12 of its
+           font-size below its baseline (0.9 line-height vs font descent),
+           while the quote's own descent + half-leading is ~0.45 of its em.
+           Tune the 0.12 factor if the seat looks off. */
+        margin-bottom: calc(var(--cta-size) * 0.12 - 0.45em);
+    }
+}
+
+/* Endcap CTA ----------------------------------------------------------------
+   One giant line, whole line is the link. The mask/slide pair is the hero
+   name's reveal verbatim (window clips, inner slides up from 112%); the
+   padding/negative-margin pair keeps the 0.9 line-height from shaving glyph
+   edges at the window borders. */
+
+.footer-cta {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-weight: 700;
+    font-size: var(--cta-size);
+    line-height: 0.9;
+    letter-spacing: 0.015em;
+    white-space: nowrap;
+    color: #fff;
+}
+
+.footer-cta-line {
+    display: block;
+    overflow: hidden;
+    padding: 0.05em 0;
+    margin: -0.05em 0;
+}
+
+.footer-cta-inner {
+    display: inline-block;
+    transform: translateY(112%);
+    transition: transform 0.95s var(--ease-out-4) 0.12s;
+    will-change: transform;
+}
+
+.site-footer.is-shown .footer-cta-inner {
+    transform: translateY(0);
+}
+
+/* Hover borrows the wordmark's signature move: tracking slowly opens over
+   0.9s. Gated to >=640px — at phone sizes the nowrap line has no room to
+   grow inside the gutters. */
+@media (min-width: 640px) {
+    .footer-cta {
+        transition: letter-spacing 0.9s var(--nav-ease);
+    }
+
+    .footer-cta:hover,
+    .footer-cta:focus-visible {
+        letter-spacing: 0.05em;
+    }
+}
+
+/* Orangered dot with a breathing-glow hover. The glow lives on a stacked
+   duplicate glyph with a STATIC text-shadow (rasterized once) and only its
+   opacity animates — the .glow-alt trick, not an animated text-shadow.
+   Both glyphs share one grid cell (the education-cards stacking idiom):
+   identical cell, identical metrics, so the layers register exactly —
+   an absolutely-positioned duplicate computed its baseline against the
+   abs box instead of the line and rendered above the real dot. */
+.footer-cta-dot {
+    display: inline-grid;
+    color: orangered;
+}
+
+.footer-cta-dot > span {
+    grid-area: 1 / 1;
+}
+
+.footer-cta-dot-glow {
+    text-shadow: 0 0 14px rgba(255, 69, 0, 0.85), 0 0 34px rgba(255, 69, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.35s var(--nav-ease);
+}
+
+.footer-cta:hover .footer-cta-dot-glow,
+.footer-cta:focus-visible .footer-cta-dot-glow {
+    opacity: 1;
+}
+
+.footer-cta:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 8px;
+    border-radius: 2px;
+}
+
+/* Direct email — the hero's secondary-link idiom (bright ink, persistent
+   orangered rule flipping to white), a distinct action from the CTA: this
+   one opens the mail client instead of the contact form. */
+
+.footer-mail-row {
+    margin-top: 2rem;
+    opacity: 0;
+    translate: 0 14px;
+    transition: opacity 0.6s var(--ease-out-3) 0.5s, translate 0.6s var(--ease-out-3) 0.5s;
+}
+
+.site-footer.is-shown .footer-mail-row {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.footer-mail {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    letter-spacing: 0.16em;
+    color: #ededed;
+    transition: color 0.35s var(--nav-ease), translate 0.35s var(--nav-ease);
+}
+
+.footer-mail::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0.16em; /* stop under the last glyph, like the nav rule */
+    bottom: -7px;
+    height: 1.5px;
+    border-radius: 1px;
+    background: var(--accent-ink);
+    box-shadow: 0 0 8px rgba(255, 69, 0, 0.55);
+    transition: background 0.35s var(--nav-ease), box-shadow 0.35s var(--nav-ease);
+}
+
+.footer-mail:hover,
+.footer-mail:focus-visible {
+    color: #fff;
+    translate: 0 -1px;
+}
+
+.footer-mail:hover::after,
+.footer-mail:focus-visible::after {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: none;
+}
+
+/* Utility strip -------------------------------------------------------------
+   The title block: © / index / channels / top on one hairline. The rule is
+   its own element (a border can't scaleX) so the entrance can draw it
+   left-to-right; the end ticks ride its pseudo-elements and fade in after
+   the draw passes them. */
+
+.footer-strip {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 3.4rem;
+    padding-top: 1.5rem;
+}
+
+.footer-strip-rule {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1s var(--ease-in-out-2) 0.35s;
+}
+
+.site-footer.is-shown .footer-strip-rule {
+    transform: scaleX(1);
+}
+
+/* End ticks — the measurement-rule idiom (hero-role-rule's end tick). */
+.footer-strip-rule::before,
+.footer-strip-rule::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    width: 1px;
+    height: 9px;
+    background: rgba(255, 255, 255, 0.45);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-3) 1.05s;
+}
+
+.footer-strip-rule::before {
+    left: 0;
+}
+
+.footer-strip-rule::after {
+    right: 0;
+}
+
+.site-footer.is-shown .footer-strip-rule::before,
+.site-footer.is-shown .footer-strip-rule::after {
+    opacity: 1;
+}
+
+/* Strip groups rise in with the hero's 0.08s stagger. Stacked (mobile)
+   order puts the index first and the legal line last; one row on desktop. */
+.footer-copy,
+.footer-nav,
+.footer-side {
+    opacity: 0;
+    translate: 0 10px;
+    transition: opacity 0.6s var(--ease-out-3), translate 0.6s var(--ease-out-3);
+}
+
+.footer-nav {
+    order: 1;
+    transition-delay: 0.55s;
+}
+
+.footer-side {
+    order: 2;
+    transition-delay: 0.63s;
+}
+
+.footer-copy {
+    order: 3;
+    transition-delay: 0.71s;
+}
+
+.site-footer.is-shown .footer-copy,
+.site-footer.is-shown .footer-nav,
+.site-footer.is-shown .footer-side {
+    opacity: 1;
+    translate: 0 0;
+}
+
+@media (min-width: 768px) {
+    .footer-strip {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .footer-copy,
+    .footer-nav,
+    .footer-side {
+        order: 0;
+    }
+}
+
+.footer-copy {
+    font-size: 0.95rem;
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+}
+
+.footer-side {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .footer-side {
+        justify-content: flex-start;
+        gap: 1.75rem;
+    }
+}
+
+/* Channels — icon links, dim-to-bright like every other interactive here. */
+/* Three links since GitHub left the row: slightly larger glyphs, wider
+   gaps, and roomier hit targets keep the group's visual weight. */
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.footer-social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.35s var(--nav-ease), translate 0.35s var(--nav-ease);
+}
+
+.footer-social-link:hover,
+.footer-social-link:focus-visible {
+    color: #fff;
+    translate: 0 -1px;
+}
+
+/* Back to top */
+.footer-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: color 0.35s var(--nav-ease);
+}
+
+.footer-top:hover,
+.footer-top:focus-visible {
+    color: #fff;
+}
+
+.footer-top-chevron {
+    transition: translate 0.35s var(--nav-ease);
+}
+
+.footer-top:hover .footer-top-chevron,
+.footer-top:focus-visible .footer-top-chevron {
+    translate: 0 -2px;
+}
+
+.footer-mail:focus-visible,
+.footer-social-link:focus-visible,
+.footer-top:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/* Reduced motion: the header's pattern — the state class still flips, but
+   every transition collapses to an instant hop, delays included (1ms hops
+   firing in sequence would still read as motion). The finished frame just
+   appears. */
+@media (prefers-reduced-motion: reduce) {
+    .site-footer *,
+    .site-footer *::before,
+    .site-footer *::after {
+        transition-duration: 1ms !important;
+        transition-delay: 0ms !important;
+    }
+}
