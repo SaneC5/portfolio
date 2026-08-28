@@ -75,7 +75,9 @@ const Hero = () => {
       if (document.querySelector('.intro-loader')) {
         window.addEventListener('intro:reveal', play, { once: true });
         listeners.push(() => window.removeEventListener('intro:reveal', play));
-        fallback = setTimeout(play, 8000);
+        // The net outlasts the loader's slowest natural path (~13s on a
+        // stalled connection: 8s load cap + full converge + hold + burst).
+        fallback = setTimeout(play, 14000);
       } else {
         play();
       }

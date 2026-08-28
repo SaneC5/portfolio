@@ -158,7 +158,7 @@
 
 /* Orangered dot with a breathing-glow hover. The glow lives on a stacked
    duplicate glyph with a STATIC text-shadow (rasterized once) and only its
-   opacity animates — the .glow-alt trick, not an animated text-shadow.
+   opacity animates — never an animated text-shadow, which repaints per frame.
    Both glyphs share one grid cell (the education-cards stacking idiom):
    identical cell, identical metrics, so the layers register exactly —
    an absolutely-positioned duplicate computed its baseline against the

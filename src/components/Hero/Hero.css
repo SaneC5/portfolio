@@ -228,7 +228,7 @@
 }
 
 .hero-portrait-hud text {
-    font-family: 'Iceland', cursive;
+    font-family: 'Iceland', 'Arial Narrow', sans-serif;
     font-size: 15px;
     letter-spacing: 3px;
     fill: var(--hero-ink-label);

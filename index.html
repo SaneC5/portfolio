@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Paint black before any CSS or JS arrives: the intro loader's canvas
+         is pure black, and without this a cold load flashed white for the
+         first frames. theme-color keeps mobile browser chrome on the same
+         canvas. -->
+    <meta name="theme-color" content="#000000" />
+    <style>html { background: #000; }</style>
+
     <!-- Fonts load from here rather than @import in index.css: the imports
          chained behind the app CSS, so on cold loads the nav wordmark painted
          in a fallback face and the bar shifted when the real fonts landed.
@@ -20,7 +27,7 @@
     <link rel="preload" as="font" type="font/woff2" crossorigin
       href="https://fonts.gstatic.com/s/iceland/v22/rax9HiuFsdMNOnWPaKtMAQ.woff2" />
     <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700&family=Codystar:wght@300&family=Iceland&family=Oswald:wght@400;500;600;700&display=swap" />
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700&family=Iceland&family=Oswald:wght@400;500;600;700&display=swap" />
 
     <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />

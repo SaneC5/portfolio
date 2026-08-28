@@ -79,7 +79,6 @@ export default function useLoadProgress(active) {
 
     // 4) The display faces the loader and hero are typeset in.
     const fonts = Promise.allSettled([
-      loadFont('300 64px Codystar', FONT_TIMEOUT_MS),
       loadFont('700 64px "Big Shoulders Display"', FONT_TIMEOUT_MS),
       loadFont('400 32px Iceland', FONT_TIMEOUT_MS),
     ]).then(() => {

@@ -60,7 +60,9 @@ const Footer = () => {
 
     if (document.querySelector('.intro-loader')) {
       window.addEventListener('intro:reveal', arm, { once: true });
-      fallback = setTimeout(arm, 8000);
+      // The net outlasts the loader's slowest natural path (~13s on a
+      // stalled connection: 8s load cap + full converge + hold + burst).
+      fallback = setTimeout(arm, 14000);
     } else {
       arm();
     }

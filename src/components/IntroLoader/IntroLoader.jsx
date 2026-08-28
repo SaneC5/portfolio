@@ -15,8 +15,15 @@ import loadFont from './loadFont';
 //    'pending' (still hoping) -> 'active' | 'failed'.
 //  - Progress comes from useLoadProgress (real load signals only). The
 //    scene paces its animation independently — see particleScene.js.
-const GREETING = 'HELLO!!!';
-const SUBTITLE = 'Welcome to my Personal Website';
+// Copy follows the site's voice: the display line ends in a single accent
+// period (SANE CHACKO. / LET'S TALK.), and the secondary line is a tracked
+// HUD label that opens the figure sequence Home continues (FIG. 01 hello,
+// FIG. 02 portrait, FIG. 03 next step). The mark is split out so both the
+// DOM fallback and the particle scene can ink it separately — white
+// display glyphs, accent period, the SANE CHACKO. idiom.
+const GREETING = 'HELLO';
+const GREETING_MARK = '.';
+const SUBTITLE = 'FIG. 00 — WELCOME';
 
 const IntroLoader = () => {
   const [phase, setPhase] = useState('loading');
@@ -49,6 +56,7 @@ const IntroLoader = () => {
         if (disposed || !canvasRef.current || !textCanvasRef.current) return;
         const scene = createParticleScene(canvasRef.current, {
           heading: GREETING,
+          headingMark: GREETING_MARK,
           subtitle: SUBTITLE,
           // Crisp text layer the scene draws and cross-fades in at handoff.
           textCanvas: textCanvasRef.current,
@@ -131,6 +139,27 @@ const IntroLoader = () => {
     return () => clearTimeout(grace);
   }, [phase, progress, reduced, webgl, finish]);
 
+  // Escape skips — the menu's Escape-to-close convention. Window-level,
+  // because the page beneath is inert while the overlay covers it.
+  useEffect(() => {
+    if (phase !== 'loading') return undefined;
+    const onKey = (event) => {
+      if (event.key === 'Escape') finish(true);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [phase, finish]);
+
+  // The component never unmounts (App keeps it in the tree), so the scene
+  // must be torn down when the overlay leaves the DOM — otherwise its rAF
+  // loop keeps drawing invisible points to a detached canvas, a GPU/CPU tax
+  // for the rest of the session. The unmount cleanup stays for hot reloads.
+  useEffect(() => {
+    if (phase !== 'gone' || !sceneRef.current) return;
+    sceneRef.current.destroy();
+    sceneRef.current = null;
+  }, [phase]);
+
   // Keep the page from scrolling underneath the overlay.
   const visible = phase !== 'gone';
   useEffect(() => {
@@ -172,29 +201,39 @@ const IntroLoader = () => {
         </>
       )}
 
-      {/* The greeting for screen readers, whichever visual path renders it. */}
-      <p className="sr-only">
-        {GREETING} {SUBTITLE}
-      </p>
+      {/* The canvas path draws the greeting as pixels; this is its accessible
+          text. The fallback path below renders real text instead. */}
+      {!showFallbackText && <p className="sr-only">Hello. Welcome to my personal website.</p>}
 
-      {/* Fallback path: greeting + welcome line stacked as one centered block. */}
+      {/* Fallback path (reduced motion / no WebGL): the finished frame in the
+          system faces — Big Shoulders display line with the accent period,
+          the bracketed Iceland HUD label under it. Static by design. */}
       {showFallbackText && (
-        <div className="flex flex-col items-center gap-4 px-4">
-          <h1 className="wlcm-head text-center text-4xl font-extrabold sm:text-6xl md:text-7xl">
+        <div className="flex flex-col items-center gap-5 px-4 text-center">
+          <h1 className="big-shoulder text-6xl font-bold leading-[0.9] tracking-[0.015em] text-white sm:text-7xl md:text-8xl">
             {GREETING}
-            <span className="glow-alt" aria-hidden="true">
-              {GREETING}
-            </span>
+            <span className="text-[orangered]">{GREETING_MARK}</span>
           </h1>
-          <p className="wlcm-head text-center text-base font-extrabold sm:text-xl md:text-2xl" aria-hidden="true">
-            {SUBTITLE}
-            <span className="glow-alt" aria-hidden="true">
+          {/* The hero role-line's bracket idiom: label-grey [ ] flanking
+              accent-ink text with its soft glow, gap matched to the canvas
+              path (0.75em visual: 0.43em box gap + the 0.32em trailing
+              track). Trailing overhang cancelled the wordmark's way. */}
+          <p className="iceland flex items-center gap-[0.43em] -mr-[0.32em] text-sm tracking-[0.32em] sm:text-base">
+            <span className="text-[#a6a6a6]" aria-hidden="true">[</span>
+            <span className="text-[#ff5a1f] [text-shadow:0_0_0.46em_rgba(255,69,0,0.4)]">
               {SUBTITLE}
             </span>
+            <span className="text-[#a6a6a6]" aria-hidden="true">]</span>
           </p>
         </div>
       )}
 
+      {/* Progress HUD. The fill draws as a scaleX wipe (the nav-underline /
+          strip-rule idiom — no per-frame layout) on the site's 0.35s ease.
+          The row holds at 100% through the whole hold-and-burst and leaves
+          with the overlay's exit fade — one exit, never a mid-sequence
+          vanish. #ff5a1f is the hero's accent-ink — orangered lightened one
+          step wherever it is used as text. */}
       <div className="absolute inset-x-0 bottom-[10%] flex flex-col items-center gap-4 px-4">
         <div
           className="h-px w-56 bg-white/15 sm:w-72"
@@ -205,19 +244,25 @@ const IntroLoader = () => {
           aria-label="Loading site"
         >
           <div
-            className="h-full bg-[orangered] shadow-[0_0_8px_orangered] transition-[width] duration-300 ease-out"
-            style={{ width: `${pct}%` }}
+            className="h-full w-full origin-left bg-[orangered] shadow-[0_0_8px_orangered] transition-transform duration-[350ms] will-change-transform"
+            style={{ transform: `scaleX(${Math.min(1, progress)})` }}
           />
         </div>
-        <p className="iceland text-lg tracking-[0.3em] text-[orangered]" aria-hidden="true">
+        {/* Fixed slot, right-aligned: the % anchor stays put as the digit
+            count grows, so the readout never wobbles (Iceland has no tabular
+            figures). */}
+        <p className="iceland min-w-[4.5ch] text-right text-lg tracking-[0.32em] text-[#ff5a1f]" aria-hidden="true">
           {pct}%
         </p>
       </div>
 
+      {/* Seated on the HUD's bottom line (one anchor system on this screen,
+          not two) at the content gutters; dim -> bright on the site's 0.35s
+          clock, with the shared focus-visible outline idiom. */}
       <button
         type="button"
         onClick={() => finish(true)}
-        className="iceland absolute right-5 bottom-5 border border-[orangered]/50 px-4 py-1 text-lg tracking-widest text-white/60 cursor-pointer transition-colors hover:border-[orangered] hover:text-[orangered] focus:border-[orangered] focus:text-[orangered]"
+        className="iceland absolute bottom-[10%] right-4 border border-[orangered]/50 px-4 py-1 text-lg tracking-widest text-white/60 cursor-pointer transition-colors duration-[350ms] hover:border-[orangered] hover:text-[orangered] focus-visible:border-[orangered] focus-visible:text-[orangered] focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-white/40 sm:right-6 lg:right-8"
       >
         SKIP
       </button>

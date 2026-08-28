@@ -1,17 +1,26 @@
-/* Fonts (Codystar, Big Shoulders Display, Iceland, Oswald) load from
+/* Fonts (Big Shoulders Display, Iceland, Oswald) load from
    index.html — preconnect + preload + a single stylesheet link — so the
    browser discovers them at document parse instead of after this file
    arrives. @import here serialized the requests behind the app CSS. */
 @import "tailwindcss";
 
+/* Iceland's fallback matches the particle scene's stack — a narrow sans,
+   never `cursive` (Comic Sans on Windows) during the font-swap window. */
 .iceland{
-    font-family: 'Iceland', cursive;
+    font-family: 'Iceland', 'Arial Narrow', sans-serif;
 }
 .big-shoulder{
     font-family: 'Big Shoulders Display', sans-serif;
 }
 .oswald{
     font-family: 'Oswald', sans-serif;
+}
+
+/* The intro loader (and the mobile menu) scroll-lock the document. A stable
+   gutter keeps the scrollbar's return from shifting the whole page sideways
+   at handoff on classic-scrollbar platforms (Windows). */
+html {
+    scrollbar-gutter: stable;
 }
 
 /* navigation *****************************************************************
@@ -212,50 +221,6 @@
     }
 }
 /* navigation end *************************************************************/
-
-/* Breathing glow, cheap version: the two glow states live on two stacked
-   text layers with STATIC text-shadows (each rasterized once), and only the
-   top layer's opacity animates — GPU-composited, so it doesn't repaint the
-   page every frame the way animating text-shadow did. */
-.wlcm-head{
-    font-family:'Codystar';
-    position: relative;
-    color: #fff;
-    text-shadow: 0 0 10px #00fff2, 0 0 20px #00fff2, 0 0 30px #00fff2, 0 0 40px #00fff2, 0 0 50px #00fff2, 0 0 60px #00fff2, 0 0 70px #00fff2, 0 0 90px #00fff2;
-}
-
-.wlcm-head .glow-alt{
-    position: absolute;
-    inset: 0;
-    color: gray;
-    text-shadow: 0 0 20px #00fff2, 0 0 30px #00fff2, 0 0 40px #00fff2, 0 0 50px #00fff2, 0 0 60px #00fff2, 0 0 70px #00fff2, 0 0 80px #00fff2, 0 0 90px #00fff2;
-    animation: glow-fade 2s ease-in-out infinite alternate;
-    will-change: opacity;
-}
-
-@keyframes glow-fade {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* Intro loader runs the site's warm accent: same glow stacks as .wlcm-head
-   but in orangered, so nothing cyan appears anywhere in the loader (covers
-   the fallback greeting and the small-screen welcome line). */
-.intro-loader .wlcm-head{
-    text-shadow: 0 0 10px orangered, 0 0 20px orangered, 0 0 30px orangered, 0 0 40px orangered, 0 0 50px orangered, 0 0 60px orangered, 0 0 70px orangered, 0 0 90px orangered;
-}
-.intro-loader .wlcm-head .glow-alt{
-    text-shadow: 0 0 20px orangered, 0 0 30px orangered, 0 0 40px orangered, 0 0 50px orangered, 0 0 60px orangered, 0 0 70px orangered, 0 0 80px orangered, 0 0 90px orangered;
-}
-
-/* Reduced motion: freeze the breathing glow at a mid state instead of pulsing.
-   Covers the intro loader and any other wlcm-head usage. */
-@media (prefers-reduced-motion: reduce) {
-    .wlcm-head .glow-alt {
-        animation: none;
-        opacity: 0.6;
-    }
-}
 
 .steve-quote{
     font-family: 'Courier New', Courier, monospace;;

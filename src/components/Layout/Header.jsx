@@ -90,7 +90,9 @@ const Header = () => {
     }
     const enter = () => setEntered(true);
     window.addEventListener('intro:reveal', enter, { once: true });
-    const fallback = setTimeout(enter, 8000);
+    // The net outlasts the loader's slowest natural path (~13s on a stalled
+    // connection: 8s load cap + full converge + hold + burst).
+    const fallback = setTimeout(enter, 14000);
     return () => {
       window.removeEventListener('intro:reveal', enter);
       clearTimeout(fallback);
