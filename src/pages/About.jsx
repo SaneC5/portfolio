@@ -8,7 +8,9 @@ import profilePic from '../assets/img/SC.webp';
 import skillbg from '../assets/img/skills-img.webp';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHtml5, faCss3Alt, faJsSquare, faReact, faNodeJs, faPython, faJava, faGitAlt, faBootstrap, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-import { faGraduationCap, faPhone, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faDownload, faRobot, faCookieBite } from '@fortawesome/free-solid-svg-icons';
+import { faGraduationCap, faLaptopCode, faCodeBranch, faChalkboardTeacher, faUniversity, faUserGraduate, faRobot, faCookieBite } from '@fortawesome/free-solid-svg-icons';
+import PhoneIcon from '../components/icons/PhoneIcon';
+import DownloadTrayIcon from '../components/icons/DownloadTrayIcon';
 import { SiTailwindcss, SiExpress, SiFacebook, SiTwilio, SiGoogle, SiPostman, SiGithub, SiVercel, SiRender, SiMysql, SiPostgresql, SiMongodb, SiC, SiWordpress, SiN8N, SiMake, SiCaldotcom, SiNextdotjs, SiAstro, SiDocker, SiStripe, SiStrapi, SiTypescript, SiGooglemaps, SiGreensock, SiWebgl } from 'react-icons/si';
 import { DiNodejs, DiVisualstudio } from 'react-icons/di';
 
@@ -459,7 +461,7 @@ const About = () => {
             </li>
           </ul>
 
-          <ScanButton to="/contact" wrapperClassName="mt-6 inline-block" icon={faPhone}>
+          <ScanButton to="/contact" wrapperClassName="mt-6 inline-block" icon={PhoneIcon}>
             Contact Me
           </ScanButton>
         </div>
@@ -563,7 +565,7 @@ const About = () => {
           full
           wrapperClassName="shadow"
           ariaLabel="Download My Resume"
-          icon={faDownload}
+          icon={DownloadTrayIcon}
         >
           Download My Resume
         </ScanButton>

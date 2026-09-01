@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { m } from 'motion/react';
+import AnimatedIcon from './AnimatedIcon';
+
+const MotionLink = m.create(Link);
 
 const SIZES = {
   sm: 'gap-2 px-3 py-1.5 text-sm',
@@ -12,6 +15,10 @@ const SIZES = {
  * brackets, with the hover scan-line. Renders a <Link> when given `to`, an
  * <a> when given `href` (plus `external`/`download`), a <button> when given
  * `type`, and a plain <span> otherwise (e.g. a "Not Live" tag).
+ *
+ * Interactive variants are motion parents driving rest/hover/press variant
+ * state down to the icon. `icon` accepts a Font Awesome definition (gets the
+ * quiet pop fallback) or a signature icon component from src/components/icons.
  */
 const ScanButton = ({
   to,
@@ -41,28 +48,32 @@ const ScanButton = ({
   const content = (
     <>
       {children}
-      {icon && <FontAwesomeIcon icon={icon} spin={iconSpin} />}
+      {icon && <AnimatedIcon icon={icon} spin={iconSpin} />}
     </>
   );
 
   const shared = { className: innerClassName, 'aria-label': ariaLabel };
 
+  // whileFocus follows focus-visible, so keyboard focus mirrors hover.
+  const motionStates = { initial: 'rest', whileHover: 'hover', whileTap: 'press', whileFocus: 'hover' };
+
   let inner;
   if (to) {
-    inner = <Link to={to} {...shared}>{content}</Link>;
+    inner = <MotionLink to={to} {...motionStates} {...shared}>{content}</MotionLink>;
   } else if (href) {
     inner = (
-      <a
+      <m.a
         href={href}
         {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         {...(download ? { download: true } : {})}
+        {...motionStates}
         {...shared}
       >
         {content}
-      </a>
+      </m.a>
     );
   } else if (type) {
-    inner = <button type={type} disabled={disabled} {...shared}>{content}</button>;
+    inner = <m.button type={type} disabled={disabled} {...motionStates} {...shared}>{content}</m.button>;
   } else {
     inner = <span {...shared}>{content}</span>;
   }

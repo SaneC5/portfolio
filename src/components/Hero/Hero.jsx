@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
-import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import BriefcaseIcon from '../icons/BriefcaseIcon';
 import ScanButton from '../ScanButton';
 import './Hero.css';
 
@@ -154,7 +154,7 @@ const Hero = () => {
                   to="/projects"
                   size="lg"
                   ariaLabel="Discover my creations — view projects"
-                  icon={faBriefcase}
+                  icon={BriefcaseIcon}
                 >
                   Discover My Creations
                 </ScanButton>

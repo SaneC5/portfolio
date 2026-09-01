@@ -10,6 +10,10 @@ const About = lazy(() => import('./pages/About'));
 const Projects = lazy(() => import('./pages/Projects'));
 const Certificates = lazy(() => import('./pages/Certificates'));
 const Contact = lazy(() => import('./pages/Contact'));
+// Dev-only icon calibration page (/icon-lab), kept for tuning future
+// signature icons. The guard is statically false in production builds,
+// so the route and its chunk are tree-shaken out of the shipped bundle.
+const IconLab = import.meta.env.DEV ? lazy(() => import('./pages/IconLab')) : null;
 
 // React Router keeps the previous scroll position across navigations; without
 // this, a new page opens mid-scroll and About's pinned section can activate
@@ -37,6 +41,7 @@ function App() {
           <Route path="projects" element={<Projects />} />
           <Route path="certificates" element={<Certificates />} />
           <Route path="contact" element={<Contact />} />
+          {import.meta.env.DEV && <Route path="icon-lab" element={<IconLab />} />}
         </Route>
       </Routes>
     </Router>

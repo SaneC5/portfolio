@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 
-import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import SendPlaneIcon from '../components/icons/SendPlaneIcon';
 import ScanButton from '../components/ScanButton';
 
 // `company` is the honeypot — hidden from people, tempting to form-filling bots.
@@ -219,7 +220,7 @@ const Contact = () => {
                 disabled={loading}
                 full
                 wrapperClassName="w-full"
-                icon={loading ? faSpinner : faPaperPlane}
+                icon={loading ? faSpinner : SendPlaneIcon}
                 iconSpin={loading}
               >
                 {loading ? 'Sending...' : 'Send Message'}
