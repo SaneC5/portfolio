@@ -78,6 +78,12 @@ import ZuperImg5 from '../assets/img/projects/zuper-5.mp4';
 import ZuperImg6 from '../assets/img/projects/zuper-6.webp';
 import ZuperImg7 from '../assets/img/projects/zuper-7.webp';
 import ZuperImg8 from '../assets/img/projects/zuper-8.webp';
+// importing Shay & Company website image
+import ShayImg1 from '../assets/img/projects/shayandcompany-1.webp';
+import ShayImg2 from '../assets/img/projects/shayandcompany-2.webp';
+import ShayImg3 from '../assets/img/projects/shayandcompany-3.webp';
+import ShayImg4 from '../assets/img/projects/shayandcompany-4.webp';
+import ShayImg5 from '../assets/img/projects/shayandcompany-5.webp';
 // importing Personal website image
 import PortfolioImg1 from '../assets/img/projects/porfolio-1.webp';
 import PortfolioImg2 from '../assets/img/projects/porfolio-2.webp';
@@ -87,6 +93,21 @@ import PortfolioImg5 from '../assets/img/projects/porfolio-5.webp';
 
 // Sample projects data — replace  paths and URLs with your real project assets
 const MY_PROJECTS = [
+  {
+    id: 'p16',
+    title: 'Shay & Company - Ingredient Store',
+    type: 'WooCommerce Redevelopment',
+    builtWith: 'WordPress, WooCommerce, PHP, JavaScript, MySQL',
+    liveUrl: 'https://shayandcompany.com/',
+    description: 'Shay & Company is an established wholesale supplier of natural ingredients — oils, butters, soap and candle supplies — running on WordPress and WooCommerce. On this live store I redeveloped the home pages, rebuilt sections of the product detail pages, optimized product search, sped up backend-to-frontend fetching of product-related documents, and fixed accessibility issues across the storefront.',
+    media: [
+      { type: 'image', src: ShayImg1 },
+      { type: 'image', src: ShayImg2 },
+      { type: 'image', src: ShayImg3 },
+      { type: 'image', src: ShayImg4 },
+      { type: 'image', src: ShayImg5 },
+    ],
+  },
   {
     id: 'p15',
     title: 'Zuper - Field Service Platform',
