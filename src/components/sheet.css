@@ -1,0 +1,355 @@
+/* Sheet primitives ************************************************************
+   The drawing-set conventions shared by the homepage sheets: SheetHeader,
+   the sheet link, SheetEndcap and SheetNote. Colours are the hero's ink
+   ladder as literal values — the hero's custom properties are scoped to
+   .hero, and a primitive must not depend on which section it sits in:
+     body #c9c9c9 · label #a6a6a6 · faint #969696 · accent ink #ff5a1f
+     paint (rules, glow) stays orangered #FF4500.
+   Everything renders the finished frame; hidden/entrance states are applied
+   by GSAP (sheetMotion.js, SheetNote.jsx), so with JS disabled or reduced
+   motion nothing ever hides. */
+
+/* Rhythm ---------------------------------------------------------------------
+   One gap between every block down the page. A sheet owns only the gap ABOVE
+   it (padding never collapses, so symmetric padding would double the gap
+   between sheets and halve it against the hero and footer). The two
+   neighbours that bring their own spacing are corrected here:
+     hero   — its spec strip pads 1.5rem below its text (Hero.css .hero-strip)
+     footer — its container pads 4rem / 5rem above its kicker (Footer.jsx)
+   so the visible distance from text to kicker is the same gap everywhere. */
+
+:root {
+    --sheet-gap: 6rem;
+    /* Clearance between a note's leader and the block it points at. */
+    --sheet-clear: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --sheet-gap: 8rem;
+    }
+}
+
+.sheet {
+    padding-top: var(--sheet-gap);
+}
+
+.hero + .sheet {
+    padding-top: calc(var(--sheet-gap) - 1.5rem);
+}
+
+/* A note's leaders carry the gap; the sheet after it keeps only clearance. */
+.sheet-note + .sheet {
+    padding-top: var(--sheet-clear);
+}
+
+.home {
+    --footer-top: 4rem;
+    padding-bottom: calc(var(--sheet-gap) - var(--footer-top));
+}
+
+@media (min-width: 640px) {
+    .home {
+        --footer-top: 5rem;
+    }
+}
+
+/* Header ---------------------------------------------------------------------*/
+
+/* Kicker — the hero kicker's geometry verbatim. */
+.sheet-kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.32em;
+    color: #a6a6a6;
+}
+
+.sheet-kicker-rule {
+    flex: none;
+    width: 2.75rem;
+    height: 1px;
+    background: orangered;
+    box-shadow: 0 0 8px rgba(255, 69, 0, 0.8);
+}
+
+.sheet-title {
+    margin-top: 1.1rem;
+    font-size: clamp(2.9rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+/* Masked line window — the hero name's reveal mechanics: the window clips,
+   the inner slides up from below it, and the padding/negative-margin pair
+   keeps the tight line-height from shaving glyph edges at the borders. */
+.sheet-title-line {
+    display: block;
+    overflow: hidden;
+    padding: 0.05em 0;
+    margin: -0.05em 0;
+}
+
+.sheet-title-inner {
+    display: inline-block;
+    will-change: transform;
+}
+
+.sheet-title-dot {
+    color: orangered;
+}
+
+/* Hairline rule under the title; the entrance draws it via scaleX. */
+.sheet-rule {
+    display: block;
+    margin-top: 1.6rem;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    transform-origin: left center;
+}
+
+/* Sub-kicker — the kicker geometry one step down (0.85rem, a 2rem rule) for
+   the units inside a sheet: plates on Sheet 01, phases on Sheet 03. Sits
+   under the sheet header in hierarchy while every block on Home still opens
+   with the same move. */
+.sheet-subkicker {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.32em;
+    color: #a6a6a6;
+}
+
+.sheet-subkicker-rule {
+    flex: none;
+    width: 2rem;
+    height: 1px;
+    background: orangered;
+    box-shadow: 0 0 8px rgba(255, 69, 0, 0.8);
+}
+
+/* Link -----------------------------------------------------------------------
+   The secondary action inside a sheet (plate details, spec cross-references).
+   Same geometry as the hero's secondary CTA (.hero-link): bright ink over a
+   persistent orangered rule — the design's "actionable" mark — flipping to
+   white on hover. */
+
+.sheet-link {
+    position: relative;
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #ededed; /* 17.9:1 */
+    transition: color 0.35s var(--nav-ease), translate 0.35s var(--nav-ease);
+}
+
+.sheet-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0.16em; /* stop under the last glyph, like the nav rule */
+    bottom: -7px;
+    height: 1.5px;
+    border-radius: 1px;
+    background: #ff5a1f;
+    box-shadow: 0 0 8px rgba(255, 69, 0, 0.55);
+    transition: background 0.35s var(--nav-ease), box-shadow 0.35s var(--nav-ease);
+}
+
+.sheet-link:hover,
+.sheet-link:focus-visible {
+    color: #fff;
+    translate: 0 -1px;
+}
+
+.sheet-link:hover::after,
+.sheet-link:focus-visible::after {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: none;
+}
+
+.sheet-link:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 8px;
+    border-radius: 2px;
+}
+
+/* Endcap ---------------------------------------------------------------------
+   A dimension line gapped for its label — the hero HUD's top dimension line
+   as a sheet closer. Rule segments run from the label to both edges with an
+   end tick at each outer end; the entrance scales them out from the label
+   (origins below). A text link, not a ScanButton: the framed button is the
+   site's primary-action control (hero CTA, form submit), and the footer's
+   own endcap is typographic. */
+
+.sheet-endcap {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    margin-top: 4.5rem;
+}
+
+.sheet-endcap-rule {
+    position: relative;
+    flex: 1 1 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.sheet-endcap-rule::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    width: 1px;
+    height: 9px;
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.sheet-endcap-rule--l {
+    transform-origin: right center;
+}
+
+.sheet-endcap-rule--l::after {
+    left: 0;
+}
+
+.sheet-endcap-rule--r {
+    transform-origin: left center;
+}
+
+.sheet-endcap-rule--r::after {
+    right: 0;
+}
+
+/* The sheet's one centred action. Larger and wider-tracked than the sheet
+   links, and its rule is the nav's directional wipe (enters left-to-right,
+   exits through the right) rather than the sheet link's persistent rule —
+   so the two never read as the same control. */
+.sheet-endcap-link {
+    position: relative;
+    flex: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: #ededed;
+    white-space: nowrap;
+    transition: color 0.35s var(--nav-ease), translate 0.35s var(--nav-ease);
+}
+
+@media (min-width: 640px) {
+    .sheet-endcap-link {
+        font-size: 16px;
+    }
+}
+
+.sheet-endcap-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0.24em; /* stop under the last glyph, like the nav rule */
+    bottom: -8px;
+    height: 1.5px;
+    border-radius: 1px;
+    background: #ff5a1f;
+    box-shadow: 0 0 8px rgba(255, 69, 0, 0.55);
+    transform: scaleX(0);
+    transform-origin: right center;
+    transition: transform 0.4s var(--nav-ease);
+}
+
+.sheet-endcap-link:hover,
+.sheet-endcap-link:focus-visible {
+    color: #fff;
+    translate: 0 -1px;
+}
+
+.sheet-endcap-link:hover::after,
+.sheet-endcap-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+}
+
+.sheet-endcap-link:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 8px;
+    border-radius: 2px;
+}
+
+/* Note -----------------------------------------------------------------------
+   A quote between sheets as a moment of its own, hung on leader lines that
+   run from the sheet above to the sheet below so it reads as attached. The
+   leaders ARE the rhythm here: clearance + leader = one sheet gap on each
+   side, so the note sits in the same rhythm as everything else. The footer
+   quote's Oswald sentence-case voice at display size, in the button-weight
+   bracket frame; the attribution alone carries the accent. */
+
+.sheet-note {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-top: var(--sheet-clear);
+    padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+    .sheet-note {
+        padding-inline: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .sheet-note {
+        padding-inline: 2rem;
+    }
+}
+
+/* Leaders draw from the sheets toward the note (origins at the outer ends). */
+.sheet-note-leader {
+    width: 1px;
+    height: calc(var(--sheet-gap) - var(--sheet-clear));
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.sheet-note-leader--top {
+    transform-origin: top center;
+}
+
+.sheet-note-leader--bottom {
+    transform-origin: bottom center;
+}
+
+.sheet-note-frame {
+    --scan-extend: 6px;
+    max-width: 44rem;
+    padding: 1.6rem 2.2rem;
+}
+
+.sheet-note-text {
+    margin: 0;
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    text-align: center;
+    color: #ededed;
+}
+
+.sheet-note-attr {
+    display: block;
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #ff5a1f;
+    white-space: nowrap;
+}

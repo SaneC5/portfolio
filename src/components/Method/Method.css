@@ -1,0 +1,124 @@
+/* Method — SHEET 03 of the homepage drawing set *******************************
+   The airy sheet: three phases on a single drawn line, and nothing else. No
+   hairlines, no hover, no endcap — the footer's LET'S TALK is this sheet's
+   call to action. The line is the page's one scrubbed animation; the phase
+   text enters once, like everything else. Hidden/entrance states are
+   applied by GSAP (Method.jsx), so with JS disabled or reduced motion
+   everything below renders the finished frame: line drawn, phases in place.
+   Ships with the Home chunk.
+
+   Ink tiers are the hero's ladder, re-declared because those custom
+   properties are scoped to .hero. */
+
+.method {
+    --ink-body: #c9c9c9;
+    --ink-label: #a6a6a6;
+    --ink-faint: #969696;
+    --accent-ink: #ff5a1f;
+    /* The line's one colour: ring stroke and segment fill both read it, so
+       the two can never drift apart. The label ink tier — a drawn line, a
+       step below the white type, well above the 0.1–0.22 sheet hairlines. */
+    --method-line: var(--ink-label);
+    /* Gaps the segments must bridge to reach the next node. */
+    --method-col-gap: 3rem;
+    --method-row-gap: 2.75rem;
+    /* Seats the node ring on the sub-kicker's line in the phone rail. */
+    --method-node-seat: 0.15rem;
+}
+
+/* Phone layout (default) — a rail down the left gutter ---------------------*/
+
+.method-line {
+    display: grid;
+    row-gap: var(--method-row-gap);
+}
+
+.method-phase {
+    display: grid;
+    grid-template-columns: 1rem minmax(0, 1fr);
+    column-gap: 1.25rem;
+}
+
+.method-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.method-node {
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    margin-top: var(--method-node-seat);
+}
+
+.method-ring {
+    fill: none;
+    stroke: var(--method-line);
+    stroke-width: 1.5;
+}
+
+/* Runs from this node to the next: fills the phase's height, then crosses
+   the row gap and the next node's seat with a negative margin. Origin at
+   the top so the scrub draws it downward. */
+.method-segment {
+    flex: 1 1 0;
+    width: 1px;
+    margin-bottom: calc(-1 * (var(--method-row-gap) + var(--method-node-seat)));
+    background: var(--method-line);
+    transform-origin: top center;
+}
+
+.method-name {
+    margin-top: 0.9rem;
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.method-copy {
+    margin-top: 0.7rem;
+    max-width: 24rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-body);
+}
+
+/* Desktop layout — a line row across the top, phases beneath ---------------*/
+
+@media (min-width: 1024px) {
+    .method-line {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        column-gap: var(--method-col-gap);
+        row-gap: 0;
+    }
+
+    .method-phase {
+        grid-template-columns: none;
+        grid-template-rows: auto 1fr;
+        column-gap: 0;
+        row-gap: 1.6rem;
+    }
+
+    .method-rail {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .method-node {
+        margin-top: 0;
+    }
+
+    /* Crosses the column gap to the next node. Origin at the left so the
+       scrub draws it rightward. */
+    .method-segment {
+        width: auto;
+        height: 1px;
+        margin-bottom: 0;
+        margin-right: calc(-1 * var(--method-col-gap));
+        transform-origin: left center;
+    }
+}

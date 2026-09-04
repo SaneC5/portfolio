@@ -1,0 +1,180 @@
+/* Technical Spec — SHEET 02 of the homepage drawing set ************************
+   A capability schedule: one ruled row per kind of work, each a term with
+   its definition, a SPEC line of tools, and a REF cross-reference to the
+   project on Sheet 01 / the Projects page that proves it. Text-only by
+   design — the rhythmic sheet between the media-heavy plates and the airy
+   Method sheet. Hidden/entrance states are applied by GSAP
+   (TechnicalSpec.jsx), so with JS disabled or reduced motion everything
+   below renders the finished frame. Ships with the Home chunk.
+
+   Ink tiers are the hero's ladder, re-declared because those custom
+   properties are scoped to .hero. */
+
+.spec {
+    --ink-body: #c9c9c9;
+    --ink-label: #a6a6a6;
+    --ink-faint: #969696;
+    --accent-ink: #ff5a1f;
+}
+
+/* Rules — one above the schedule, one under every row; the entrance draws
+   each via scaleX from the left. */
+.spec-rule {
+    display: block;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    transform-origin: left center;
+}
+
+.spec-row {
+    position: relative;
+}
+
+/* Row layout ------------------------------------------------------------------
+   Phones: a stack — name, definition, then the SPEC / REF rows as an inline
+   label/value table (the plate title block's shape). From 1024px: a three-
+   column schedule — term (name + definition) | SPEC | REF — with the dl
+   dissolved (display: contents) so its two rows become the grid's second
+   and third columns, labels stacked above their values. Provisional until
+   the layout has been looked at. */
+
+.spec-row-inner {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1.5rem 0;
+}
+
+.spec-name {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+    color: var(--ink-body);
+    transition: color 0.35s var(--nav-ease);
+}
+
+/* Hover tick — the mobile nav's active-page dash (same left offset, width
+   and weight), grown from the gutter on hover/focus-within. */
+.spec-name::before {
+    content: '';
+    position: absolute;
+    left: -1.375rem;
+    top: 0.45em;
+    width: 0.875rem;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--accent-ink);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.4s var(--nav-ease);
+}
+
+.spec-term {
+    position: relative;
+}
+
+.spec-desc {
+    margin-top: 0.55rem;
+    max-width: 34rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-body);
+}
+
+.spec-meta {
+    display: grid;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+}
+
+.spec-meta-row {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    column-gap: 1rem;
+    align-items: baseline;
+}
+
+.spec-meta dt {
+    color: var(--ink-faint);
+}
+
+.spec-meta dd {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    row-gap: 0.3rem;
+    color: var(--ink-body);
+}
+
+/* Slash-separated values — the hero spec strip's idiom. REF links carry
+   their own rule, so their separator is a real span (.spec-sep) instead of
+   a pseudo-element the rule would underline. */
+.spec-item + .spec-item::before {
+    content: '/';
+}
+
+.spec-item + .spec-item::before,
+.spec-sep {
+    margin-inline: 0.8em;
+    color: rgba(255, 90, 31, 0.75);
+}
+
+/* "THIS SITE" — the one reference that is not a link. */
+.spec-ref-plain {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-label);
+}
+
+@media (min-width: 1024px) {
+    .spec-row-inner {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.7fr);
+        column-gap: 2.5rem;
+        align-items: start;
+        padding: 1.7rem 0;
+    }
+
+    .spec-meta {
+        display: contents;
+    }
+
+    .spec-meta-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    /* The sheet link sits on a baseline row of Iceland caps; nudge its
+       hover rule clear of the row beneath. */
+    .spec-meta dd .sheet-link {
+        margin-bottom: 4px;
+    }
+}
+
+/* Hover / keyboard focus: name brightens to white, tick grows in. */
+@media (hover: hover) and (pointer: fine) {
+    .spec-row:hover .spec-name,
+    .spec-row:focus-within .spec-name {
+        color: #fff;
+    }
+
+    .spec-row:hover .spec-name::before,
+    .spec-row:focus-within .spec-name::before {
+        transform: scaleX(1);
+    }
+}
+
+/* The entrance never runs under reduced motion (TechnicalSpec.jsx bails
+   before building anything); this collapses the hover transitions to an
+   instant hop, the header's pattern. */
+@media (prefers-reduced-motion: reduce) {
+    .spec-name,
+    .spec-name::before {
+        transition-duration: 1ms !important;
+    }
+}

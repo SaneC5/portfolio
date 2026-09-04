@@ -222,10 +222,6 @@ html {
 }
 /* navigation end *************************************************************/
 
-.steve-quote{
-    font-family: 'Courier New', Courier, monospace;;
-}
-
 /* border-scan corner brackets ************************************************
    One definition for every framed button/card. --scan-extend is how far the
    frame sticks out past the box (in px, so it doesn't depend on the element's

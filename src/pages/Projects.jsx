@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import FadeImage from '../components/FadeImage';
 import ScanButton from '../components/ScanButton';
 
@@ -94,7 +95,7 @@ import PortfolioImg5 from '../assets/img/projects/porfolio-5.webp';
 // Sample projects data — replace  paths and URLs with your real project assets
 const MY_PROJECTS = [
   {
-    id: 'p16',
+    id: 'shay-and-company',
     title: 'Shay & Company - Ingredient Store',
     type: 'WooCommerce Redevelopment',
     builtWith: 'WordPress, WooCommerce, PHP, JavaScript, MySQL',
@@ -109,7 +110,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p15',
+    id: 'zuper',
     title: 'Zuper - Field Service Platform',
     type: 'SaaS Marketing Website',
     builtWith: 'Astro, React, TypeScript (TSX), WordPress (Headless CMS)',
@@ -127,7 +128,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p14',
+    id: 'portfolio',
     title: 'Personal Portfolio',
     type: 'Portfolio Website',
     builtWith: 'React (Vite), Tailwind CSS, GSAP, Express.js, Node.js',
@@ -142,7 +143,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p13',
+    id: 'funndrive',
     title: 'Funndrive - Car Rental',
     type: 'Rental Service Website',
     builtWith: 'HTML, CSS, Bootstrap, JavaScript',
@@ -156,7 +157,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p12',
+    id: 'mill-plain-dental',
     title: 'Mill Plain Dental Center',
     type: 'WordPress Website',
     builtWith: 'WordPress, HTML, JavaScript, Node.js, Express.js, MySQL',
@@ -169,7 +170,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p11',
+    id: 'retell',
     title: 'AI Automation Calling System',
     type: 'AI Workflow Automation',
     builtWith: 'Make.com, Retell AI, Google Sheets, Cal.com',
@@ -182,7 +183,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p10',
+    id: 'zylyn',
     title: 'Zylyn - Accessibility Checker',
     type: 'Full-Stack SaaS Platform',
     builtWith: 'Next.js, TypeScript (TSX), Tailwind CSS, Node.js, Express.js, SQL, Stripe, c15t, Chrome Extension',
@@ -200,7 +201,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p9',
+    id: 'kondaji',
     title: 'Kondaji Chivda',
     type: 'Full-Stack E-Commerce Website',
     builtWith: 'HTML, CSS, Bootstrap, JavaScript, Node.js, Express.js, SQL',
@@ -220,7 +221,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p8',
+    id: 'estpl',
     title: 'ESTPL - IT Company',
     type: 'Concept Corporate Website',
     builtWith: 'HTML, CSS, Bootstrap',
@@ -233,7 +234,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p7',
+    id: 'movie-search',
     title: 'Movie Search App',
     type: 'Interactive Web Application',
     builtWith: 'HTML, CSS, JavaScript, OMDb API',
@@ -245,7 +246,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p6',
+    id: 'music-player',
     title: 'Music Player',
     type: 'Interactive Web Application',
     builtWith: 'HTML, CSS, JavaScript, Web Audio API',
@@ -259,7 +260,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p5',
+    id: 'dice-game',
     title: 'Dice Game',
     type: 'Interactive Web Game',
     builtWith: 'HTML, CSS, JavaScript, jQuery',
@@ -272,7 +273,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p4',
+    id: 'age-calculator',
     title: 'Age Calculator',
     type: 'Interactive Web Application',
     builtWith: 'HTML, CSS, JavaScript, jQuery',
@@ -284,7 +285,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p3',
+    id: 'virtual-piano',
     title: 'Virtual Piano',
     type: 'Interactive Web Application',
     builtWith: 'HTML, CSS, JavaScript, jQuery',
@@ -297,7 +298,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p2',
+    id: 'skycab',
     title: 'SkyCab Booking',
     type: 'Concept Brand Website',
     builtWith: 'HTML, CSS, Bootstrap',
@@ -312,7 +313,7 @@ const MY_PROJECTS = [
     ],
   },
   {
-    id: 'p1',
+    id: 'spenca',
     title: 'Spenca - Mineral Water',
     type: 'Concept Brand Website',
     builtWith: 'HTML, CSS, Bootstrap',
@@ -589,7 +590,14 @@ const MediaSlider = ({ media = [], onOpen }) => {
    --------------------- */
 const ProjectCard = React.memo(({ project, onOpenLightbox }) => {
   return (
-    <article className="bg-black corner-border shadow-sm hover:shadow-md overflow-hidden flex flex-col">
+    // id = the project's explicit `id` field (never the array index), so the
+    // homepage's /projects#<id> deep links survive reordering. scroll-mt
+    // clears the fixed header; :target flips the corner frame to the accent
+    // so the linked card is findable in the grid.
+    <article
+      id={project.id}
+      className="bg-black corner-border shadow-sm hover:shadow-md overflow-hidden flex flex-col scroll-mt-[calc(var(--nav-h)+1.5rem)] target:[--c:orangered]"
+    >
       <MediaSlider media={project.media} onOpen={(startIndex) => onOpenLightbox(project.media, startIndex)} />
 
       <div className="p-4 flex-1 flex flex-col">
@@ -632,6 +640,19 @@ const Projects = ({ projects = MY_PROJECTS }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxMedia, setLightboxMedia] = useState([]);
   const [lightboxStartIndex, setLightboxStartIndex] = useState(0);
+
+  // Deep links from the homepage plates (/projects#zylyn): seat the target card
+  // once this lazy chunk has mounted. Card media has fixed heights, so the
+  // position is stable before images load. App's ScrollToTop stands down
+  // whenever a hash is present.
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (!hash) return;
+    const target = document.getElementById(hash.slice(1));
+    if (!target) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  }, [hash]);
 
   // Stable references so the memoized cards don't re-render when the
   // lightbox opens/closes.

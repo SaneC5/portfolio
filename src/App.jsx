@@ -19,10 +19,13 @@ const IconLab = import.meta.env.DEV ? lazy(() => import('./pages/IconLab')) : nu
 // this, a new page opens mid-scroll and About's pinned section can activate
 // at the wrong position.
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
+    // A hash means the page seats its own target (Projects deep links from
+    // the homepage plates); jumping to the top first would fight it.
+    if (hash) return;
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, hash]);
   return null;
 };
 
