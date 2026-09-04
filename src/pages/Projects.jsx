@@ -79,6 +79,9 @@ import ZuperImg5 from '../assets/img/projects/zuper-5.mp4';
 import ZuperImg6 from '../assets/img/projects/zuper-6.webp';
 import ZuperImg7 from '../assets/img/projects/zuper-7.webp';
 import ZuperImg8 from '../assets/img/projects/zuper-8.webp';
+import ZuperImg9 from '../assets/img/projects/zuper-9.webp';
+import ZuperImg10 from '../assets/img/projects/zuper-10.webp';
+import ZuperImg11 from '../assets/img/projects/zuper-11.webp';
 // importing Shay & Company website image
 import ShayImg1 from '../assets/img/projects/shayandcompany-1.webp';
 import ShayImg2 from '../assets/img/projects/shayandcompany-2.webp';
@@ -125,6 +128,9 @@ const MY_PROJECTS = [
       { type: 'image', src: ZuperImg6 },
       { type: 'image', src: ZuperImg7 },
       { type: 'image', src: ZuperImg8 },
+      { type: 'image', src: ZuperImg9 },
+      { type: 'image', src: ZuperImg10 },
+      { type: 'image', src: ZuperImg11 },
     ],
   },
   {
